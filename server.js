@@ -12,6 +12,11 @@ const PORT = process.env.PORT || 5000;
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
+// Controllers =================== //
+const userCtrl = require('./controllers/users.js')
+
+app.use('/api/v1/user', userCtrl)
+
 // API Endpoints ================= //
 // Put all API endpoints under '/api/v1'
 // app.get...
