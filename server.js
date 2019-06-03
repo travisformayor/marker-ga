@@ -17,8 +17,12 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 // app.get...
 app.get('/api/v1/test', (req, res) => {
   const count = 5;
-  const passwords = Array(count);
-  res.json(passwords);
+
+  var testOut = [];
+  for (var i = 1; i <= count; i++) {
+     testOut.push(i);
+  }
+  res.json(testOut);
   console.log(`Sent ${count} array`);
 });
 
