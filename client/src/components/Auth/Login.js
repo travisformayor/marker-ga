@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-// import axios from 'axios';
+import Error from '../Error/Error';
+import AxiosModel from '../../models/axios';
 
-const Login = ({ setCurrentUser, history }) => { // destructure setCurrentUser out of props
+const Login = () => {
   // Hooks
   const [ errors, setErrors ] = useState([]);
   const [ userData, setUserData ] = useState({
-    email: '',
+    username: '',
     password: '',
   });
 
@@ -19,30 +20,32 @@ const Login = ({ setCurrentUser, history }) => { // destructure setCurrentUser o
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API}/auth/login`, userData, { withCredentials: true });
-      console.log('Response: ',response);
-      const currentUser = response.data.success.id;
-      localStorage.currentUser = currentUser; // save to localstorage to protect against refreshes
-      setCurrentUser(currentUser);
-      history.push(`/profile/${currentUser}`)
-
+      const response = await AxiosModel.login(userData);
+      // console.log('Response: ',response);
+      setErrors([]);
+      // const currentUser = response.data.success.id;
+      localStorage.token = response.data.token;
+      // success outcome: redirect? dismiss modal?
+      // history.push(`/profile/${currentUser}`)
     } catch(err) {
-      console.log(err);
+      // console.log(err.response);
       setErrors(err.response.data.errors)
     }
   }
 
-  const { email, password } = userData;
+  const { username, password } = userData;
 
   return(
     <section className="form">
-      {errors ? errors.map(error => `${error.message}. `) : null }
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="email" value={email} onChange={handleChange} placeholder="Email Address" />
+        <input type="text" name="username" value={username} onChange={handleChange} placeholder="Username" />
         <input type="password" name="password" value={password} onChange={handleChange} placeholder="Password" />
         <input type="submit" value="Submit" />
       </form>
+      {errors.map((error, index) => (
+        <Error message={error.message} key={index} />
+      ))}
     </section> 
     )
 }
