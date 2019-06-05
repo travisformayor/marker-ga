@@ -11,24 +11,23 @@ const genericError = "Something went wrong, please try again";
 module.exports = {
   signup: async (req,res) => {
     const { username, email, password, password2 } = req.body;
-    console.log(req.body)
-    const errors = [];
-
+    // console.log(req.body)
+    
     // Validation
-    if (!username) errors.push({message: 'Please enter a username'});
-    if (!email) errors.push({message: 'Please enter your email'});
-    if (!password) errors.push({message: 'Please enter your password'});
-    if (password !== password2) errors.push({message: 'Your passwords do not match'});
-
+    const errors = [];
+    if (!username) errors.push({message: 'Please enter a username', type: 'username'});
+    if (!email) errors.push({message: 'Please enter your email', type: 'email'});
+    if (!password) errors.push({message: 'Please enter your password', type: 'password'});
+    if (password !== password2) errors.push({message: 'Your passwords do not match', type: 'password2'});
     // If errors, respond with errors array
     if (errors.length) return res.status(400).json({status: 400, errors});
     
     try {
       // Check for existing user account
       const emailExists = await db.User.findOne({email}); // {email: email}
-      if (emailExists) return res.status(400).json({status: 400, errors: [{message: 'Email already used'}]});
+      if (emailExists) return res.status(400).json({status: 400, errors: [{message: 'Email already used', type: 'email'}]});
       const usernameExists = await db.User.findOne({username}); // {username: username}
-      if (usernameExists) return res.status(400).json({status: 400, errors: [{message: 'Username already used'}]});
+      if (usernameExists) return res.status(400).json({status: 400, errors: [{message: 'Username already used', type: 'username'}]});
 
       // Salt and Hash user password
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -53,16 +52,18 @@ module.exports = {
       return res.status(200).json({status: 200, success: 'success', user: userPayload, token});
     } catch (err) {
       console.log(err);
-      return res.status(500).json({status: 500, errors: [{message: genericError}]});
+      return res.status(500).json({status: 500, errors: [{message: genericError, type: 'extra'}]});
     }
   },
   login: async (req,res) => {
     const { username, password } = req.body;
+
     // Validation
-    if(!username || !password) return res.status(400).json({
-      status: 400, 
-      errors: [{message: 'Please enter your username and password'}]
-    });
+    const errors = [];
+    if (!username) errors.push({message: 'Please enter a username', type: 'username'});
+    if (!password) errors.push({message: 'Please enter your email', type: 'password'});
+    // If errors, respond with errors array
+    if (errors.length) return res.status(400).json({status: 400, errors});
 
     try {
       // Find user by username
@@ -70,14 +71,14 @@ module.exports = {
       // if user not found return error
       if (!foundUser) return res.status(404).json({
         status: 404,
-        errors: [{message: 'Username or Password is incorrect'}]
+        errors: [{message: 'Username or Password is incorrect', type: 'extra'}]
       });
 
       const passwordMatch = await bcrypt.compare(password, foundUser.password);
       // Return error if passwords do not match
       if (!passwordMatch) return res.status(400).json({
         status: 400,
-        errors: [{message: 'Username or Password is incorrect'}]
+        errors: [{message: 'Username or Password is incorrect', type: 'extra'}]
       });
 
       // Passwords match
@@ -92,7 +93,7 @@ module.exports = {
       return res.status(200).json({status: 200, success: 'success', user: userPayload, token});
     } catch (err) {
       console.log(err);
-      return res.status(500).json({status: 500, errors: [{message: genericError}]});
+      return res.status(500).json({status: 500, errors: [{message: genericError, type: 'extra'}]});
     }
   },
   getProfile: async (req,res) => {
@@ -100,7 +101,7 @@ module.exports = {
     console.log('the user id is: ', req.userId);
 
     const foundUser = await db.User.findById(req.userId, {password: 0, __v: 0}); // filter off the password and version
-    if (!foundUser) return res.status(400).json({status: 400, errors: [{message: 'Invalid user error. Logout and try again.'}]});
+    if (!foundUser) return res.status(400).json({status: 400, errors: [{message: 'Invalid user error. Logout and try again.', type: 'extra'}]});
     console.log('Found user: ', foundUser);
     return res.status(200).json({status: 200, success: 'success', foundUser})
   },
@@ -110,7 +111,7 @@ module.exports = {
 //   const { userId } = req.params;
 //   try {
 //     const user = await db.User.findById(userId, {password: 0, __v: 0}); // filter off password, email, and version
-//     if (!user) return res.status(400).json({status: 400, errors: [{message: 'User not found'}]});
+//     if (!user) return res.status(400).json({status: 400, errors: [{message: 'User not found', type: 'extra'}]});
 
 //     const userPosts = await db.Post.find({user_id: userId})
 //       .populate({ path: 'user_id', select: 'name'}) // add in the user's name to the user_id property in the post data
@@ -120,6 +121,6 @@ module.exports = {
   
 //   } catch(err) {
 //     console.log(err);
-//     return res.status(500).json({status: 500, errors: [{message: genericError}]});
+//     return res.status(500).json({status: 500, errors: [{message: genericError, type: 'extra'}]});
 //   }
 // });
