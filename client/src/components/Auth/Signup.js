@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import AxiosModel from '../../models/axios';
 import Error from '../Error/Error';
@@ -25,23 +21,28 @@ const Signup = () => {
       [event.target.name]: event.target.value, // Add any new changes
     })
   };
-  const handleClickShowPassword = () => {
-    setUserValues({ ...newUser, showPassword: !newUser.showPassword });
-  };
-  
+
   const handleSubmit = async e => {
     e.preventDefault();
     try {
       const response = await AxiosModel.signup(newUser);
-      console.log('Response: ',response);
+      // console.log('Response: ',response);
       setErrors([]); // clear old errors
       localStorage.token = response.data.token;
       // success outcome: redirect? dismiss modal?
       // history.push(`/profile`)
     } catch(err) {
-      console.log(err.response);
+      // console.log(err.response);
       setErrors(err.response.data.errors)
     }
+  }
+
+  const getError = (name) => {
+    if (errors.length) {
+      const error = errors.find( error => error.type === name)
+      // console.log(error);
+      if (error) return error.message;
+    } else return
   }
 
   // Nav button css
@@ -51,7 +52,7 @@ const Signup = () => {
       borderRadius: 5,
       border: 0,
       color: 'white',
-      // height: 40,
+      height: 50,
       padding: '0px 40px',
       // marginTop: '30px',
       boxShadow: '0 3px 5px 5px rgba(255, 105, 135, .3)',
@@ -65,6 +66,7 @@ const Signup = () => {
   const useStyles = makeStyles(theme => ({
     container: {
       display: 'flex',
+      flexDirection: 'column',
       flexWrap: 'wrap',
     },
     textField: {
@@ -82,7 +84,8 @@ const Signup = () => {
       <form onSubmit={handleSubmit} className={classes.container} noValidate autoComplete="off">
         <TextField
           required
-          // error
+          helperText={getError('username')}
+          error={getError('username') ? true : false}
           id="outlined-username"
           className={classes.textField}
           label="Username"
@@ -94,7 +97,8 @@ const Signup = () => {
         />
         <TextField
           required
-          // error
+          helperText={getError('email')}
+          error={getError('email') ? true : false}
           id="outlined-email-input"
           className={classes.textField}
           label="Email"
@@ -108,7 +112,8 @@ const Signup = () => {
         />
         <TextField
           required
-          // error
+          helperText={getError('password')}
+          error={getError('password') ? true : false}
           id="outlined-password-input"
           className={classes.textField}
           label="Password"
@@ -121,7 +126,8 @@ const Signup = () => {
         />
         <TextField
           required
-          // error
+          helperText={getError('password2')}
+          error={getError('password2') ? true : false}
           id="outlined-password2-input"
           className={classes.textField}
           label="Confirm Password"
@@ -132,14 +138,14 @@ const Signup = () => {
           margin="normal"
           variant="outlined"
         />
+        {errors.filter(error => error.type === 'extra').map((error, index) => (
+          <Error message={error.message} key={index} />
+        ))}
         <NavButton 
           variant="contained" className={classes.button} type="submit" label="login">
           Signup
         </NavButton>
       </form>
-      {errors.map((error, index) => (
-        <Error message={error.message} key={index} />
-      ))}
     </>
   );
 }
