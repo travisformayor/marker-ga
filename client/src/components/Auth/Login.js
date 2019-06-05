@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import AxiosModel from '../../models/axios';
 import Error from '../Error/Error';
 
-function FormTest() {
+const Login = () => {
   // Hooks
   const [ errors, setErrors ] = useState([]);
   const [ userValues, setValues ] = useState({
@@ -129,5 +129,4 @@ function FormTest() {
     </>
   );
 }
-
-export default FormTest;
+export default Login;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, Link } from 'react-router-dom';
-
 import Header from '../Header/Header';
 import Signup from '../Auth/Signup';
 import Login from '../Auth/Login';
