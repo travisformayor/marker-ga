@@ -7457,7 +7457,7 @@ popmotion-pose@^3.4.0:
     ts-essentials "^1.0.3"
     tslib "^1.9.1"
 
-popmotion@^8.6.2:
+popmotion@^8.6.10, popmotion@^8.6.2:
   version "8.6.10"
   resolved "https://registry.yarnpkg.com/popmotion/-/popmotion-8.6.10.tgz#1133105f234fb617285bd254e473276153279219"
   integrity sha512-pXGkj1Iy61sgwJvdKabHVP+5IeyCN2DdjdpAAVGhRhT31VYoLlKVOI6+SI747CecuyBI6zxSdZDNrrjdrldKuQ==
