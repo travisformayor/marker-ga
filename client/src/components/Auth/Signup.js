@@ -33,7 +33,7 @@ const Signup = ({ close }) => {
       close();
       // history.push(`/profile`)
     } catch(err) {
-      console.log(err.response);
+      // console.log(err.response);
       setErrors(err.response.data.errors)
     }
   }

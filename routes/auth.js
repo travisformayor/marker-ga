@@ -10,12 +10,12 @@ router.post('/signup', controllers.auth.signup);
 // jwt authentication middleware
 
 router.use( async (req, res, next) => {
-  console.log('checking auth...');
+  // console.log('checking auth...');
   const token = req.headers['authorization'];
-  console.log('Token received: ', token);
+  // console.log('Token received: ', token);
   if (typeof(token) !== 'undefined') {
     const openUp = await jwt.decode(token, process.env.JWT_SECRET);
-    console.log('decoded: ', openUp)
+    // console.log('decoded: ', openUp)
     req.userId = openUp.id;
     next();
   } else {

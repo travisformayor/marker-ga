@@ -39,7 +39,7 @@ function Header(props) {
 
   const getPath = () => {
     const pathname = props.location.pathname.split('/')[1]; // ignore any trailing /pages
-    console.log('current path: ', pathname)
+    // console.log('current path: ', pathname)
     // Set state for the other paths
     const newPaths = navLinks.filter(navOption => navOption.path !== pathname);
     setPaths(newPaths)

@@ -51,7 +51,7 @@ module.exports = {
 
       return res.status(200).json({status: 200, success: 'success', user: userPayload, token});
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return res.status(500).json({status: 500, errors: [{message: genericError, type: 'extra'}]});
     }
   },
@@ -82,7 +82,7 @@ module.exports = {
       });
 
       // Passwords match
-      console.log("Match: ", passwordMatch)
+      // console.log("Match: ", passwordMatch)
       // create a json web token
       const userPayload ={
         username: foundUser.username,
@@ -92,17 +92,17 @@ module.exports = {
 
       return res.status(200).json({status: 200, success: 'success', user: userPayload, token});
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       return res.status(500).json({status: 500, errors: [{message: genericError, type: 'extra'}]});
     }
   },
   getProfile: async (req,res) => {
-    console.log('in the profile get route');
-    console.log('the user id is: ', req.userId);
+    // console.log('in the profile get route');
+    // console.log('the user id is: ', req.userId);
 
     const foundUser = await db.User.findById(req.userId, {password: 0, __v: 0}); // filter off the password and version
     if (!foundUser) return res.status(400).json({status: 400, errors: [{message: 'Invalid user error. Logout and try again.', type: 'extra'}]});
-    console.log('Found user: ', foundUser);
+    // console.log('Found user: ', foundUser);
     return res.status(200).json({status: 200, success: 'success', foundUser})
   },
 }
@@ -120,7 +120,7 @@ module.exports = {
 //     res.json({user, userPosts});
   
 //   } catch(err) {
-//     console.log(err);
+//     // console.log(err);
 //     return res.status(500).json({status: 500, errors: [{message: genericError, type: 'extra'}]});
 //   }
 // });
