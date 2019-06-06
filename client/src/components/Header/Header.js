@@ -13,7 +13,7 @@ import AuthDialog from '../Auth/AuthDialog';
 import Nav from './Nav';
 
 function Header(props) {
-  const { userInfo: { loggedIn }, logOut, getProfile } = props;
+  const { userInfo: { loggedIn, user: { username } }, logOut, getProfile } = props;
   const defaultTitle = {title: '404', color: 'orange, beige'}
   // Hooks
   const [ auth, setAuth ] = useState(false);
@@ -94,6 +94,10 @@ function Header(props) {
     },
     dropMenu: {
       marginTop: 50,
+    },
+    username: {
+      textTransform: 'capitalize',
+      borderBottom: '1px solid grey',
     }
   }));
   const classes = useStyles();
@@ -121,10 +125,15 @@ function Header(props) {
                 onClose={handleClose}
                 anchorEl={anchor}
               >
+                <MenuItem disabled className={classes.username}>
+                  {username}
+                </MenuItem>
                 <MenuItem onClick={handleClose} component={Link} to="/profile">
                     Profile
                 </MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  Logout
+                </MenuItem>
               </Menu>
             </div>
           ) : (
@@ -135,9 +144,6 @@ function Header(props) {
         </Toolbar>
       </AppBar>
       <Nav paths={paths} auth={auth}/>
-      {/* <button onClick={() => setAuth(!auth)}>
-        Login - {auth ? "true" : "false"}
-      </button> */}
     </>
   );
 }
