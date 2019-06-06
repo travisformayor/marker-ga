@@ -22,7 +22,7 @@ function App() {
         const response = await AxiosModel.getProfile(localStorage.token);
         // console.log('Token check went through', response.data);
         const { foundUser } = response.data
-        await setUserInfo({
+        setUserInfo({
           loggedIn: true,
           user: foundUser
         });
@@ -53,7 +53,7 @@ function App() {
       <Header userInfo={userInfo} logOut={logOut} getProfile={getProfile} />
       <main>
         {errors.map((error, index) => (
-          <Error message={error.message} key={index} />
+          <Error message={error.message} key={'root-error'+index} />
         ))}
         <Switch>
           <Route path="/profile" render={() => <Profile user={userInfo.user} /> } />

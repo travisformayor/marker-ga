@@ -1,27 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withRouter } from "react-router";
+import { makeStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Menu from '@material-ui/core/Menu';
 import AuthDialog from '../Auth/AuthDialog';
+import Nav from './Nav';
 
 function Header(props) {
   const { userInfo: { loggedIn }, logOut, getProfile } = props;
   // Hooks
   const [ auth, setAuth ] = useState(false);
   const [ anchor, setAnchor ] = useState(null);
+  const [ paths, setPaths ] = useState([]);
+  const [ titleState, setTitle ] = useState({
+    title: '',
+    color: 'yellow, beige',
+  })
 
   const open = Boolean(anchor);
 
   useEffect(() => {
     setAuth(loggedIn);
   },[loggedIn]);
+
+  // console.log('path ', props.location.pathname)
+
+  const navLinks = [
+    {name: 'main', path: '/', color: '#3f51b5, 30%, #6573c3'}, // dark blue
+    {name: 'create', path: '/create', color: '#2196f3, 30%, #4dabf5'}, // lite blue
+    {name: 'trade', path: '/trade', color: '#ff5722, 30%, #ff784e'}, // orange
+    {name: 'artists', path: '/artists', color: '#4caf50, 30%, #6fbf73'}, // green
+    {name: 'profile', path: '/profile', color: '#673ab7, 30%, #8561c5'}, // purple
+  ]
+
+  const getPath = () => {
+    const { pathname } = props.location;
+    console.log('current path: ', pathname)
+    // Set state for the other paths
+    const newPaths = navLinks.filter(navOption => navOption.path !== pathname);
+    setPaths(newPaths)
+    // Set the title bar state
+    const newTitle = navLinks.find(navOption => navOption.path === pathname);
+    setTitle({
+      title: newTitle.name,
+      color: newTitle.color,
+    })
+  }
+
+  useEffect(() => {
+    getPath();
+  },[props.location.pathname]);
 
   // Profile Menu drop down menu functions
   const handleMenu = (event) => {
@@ -35,44 +69,19 @@ function Header(props) {
     handleClose();
   }
 
-  // Nav button css
-  const NavButton = withStyles({
-    root: {
-      background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-      borderRadius: 5,
-      border: 0,
-      color: 'white',
-      height: 40,
-      padding: '0px 25px',
-      margin: '0px 5px',
-      boxShadow: '0 3px 5px 5px rgba(255, 105, 135, .3)',
-      // position: 'absolute',
-    },
-    label: {
-      textTransform: 'capitalize',
-    },
-  })(Button);
-
   // CSS Class Styles
   const useStyles = makeStyles(theme => ({
-    navTop: {
+    topBar: {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       padding: '20px',
       textAlign: 'center',
-    },
-    navBottom: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      margin: '10px 5px 20px',
-      textAlign: 'center',
+      background: `linear-gradient(${titleState.color})`, // dark blue
     },
     title: {
-      // display: 'inline-block',
+      textTransform: 'capitalize',
     },
     profileControl: {
       position: 'absolute',
@@ -83,14 +92,14 @@ function Header(props) {
       marginTop: 50,
     }
   }));
-  
   const classes = useStyles();
+
   return (
     <>
       <AppBar position="static">
-        <Toolbar className={classes.navTop}>
+        <Toolbar className={classes.topBar}>
           <Typography variant="h3" className={classes.title}>
-            Test One
+            {titleState.title}
           </Typography>
           {auth ? (
             <div className={classes.profileControl}>
@@ -121,20 +130,7 @@ function Header(props) {
           )}
         </Toolbar>
       </AppBar>
-      <div className={classes.navBottom}>
-        <NavButton component={Link} to="/">
-          main
-        </NavButton>
-        <NavButton component={Link} to="/create">
-          create
-        </NavButton>
-        <NavButton component={Link} to="/artists">
-          artists
-        </NavButton>
-        <NavButton component={Link} to="/profile">
-          profile
-        </NavButton>
-      </div>
+      <Nav paths={paths} />
       {/* <button onClick={() => setAuth(!auth)}>
         Login - {auth ? "true" : "false"}
       </button> */}
@@ -142,4 +138,4 @@ function Header(props) {
   );
 }
 
-export default Header;
+export default withRouter(Header);
