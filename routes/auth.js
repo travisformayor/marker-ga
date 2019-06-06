@@ -23,7 +23,7 @@ router.use( async (req, res, next) => {
   }
 });
 
-router.get('/profile', controllers.auth.getProfile);
+router.get('/profile', controllers.authCtrl.getProfile);
 
 // router.get('/profile', controllers.auth.profile);
 // https://git.generalassemb.ly/SF-WDI/walk-it-out-back-end/tree/solution

@@ -12,7 +12,7 @@ module.exports = {
   // Upload image API
   uploadImage: async (req, res) => {
     // 'app.use(fileUpload...' middleware in server.js aborts on files to large before getting here
-    if (req.files === null) {
+    if (!req.files) {
       return res.status(400).json({status: 400, alerts: [{message: 'No file uploaded', type: 'upload'}]});
     } 
     const { file } = req.files;
