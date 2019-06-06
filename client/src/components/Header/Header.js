@@ -100,7 +100,7 @@ function Header(props) {
                 aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit"
-              ><AccountCircle /></IconButton>
+              ><AccountCircle style={{ fontSize: 40 }} /></IconButton>
               <Menu
                 className={classes.dropMenu}
                 id="profile-menu"
