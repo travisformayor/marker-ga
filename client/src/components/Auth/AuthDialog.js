@@ -10,15 +10,15 @@ import withMobileDialog from '@material-ui/core/withMobileDialog';
 import Login from './Login'
 import Signup from './Signup'
 
-function AuthDialog(props) {
+const AuthDialog = (props) => {
   const { fullScreen, getProfile } = props;
   const [open, setOpen] = useState(false);
 
-  function handleOpen() {
+  const handleOpen = () => {
     setOpen(true);
   }
 
-  function handleClose() {
+  const handleClose = () => {
     setOpen(false);
     getProfile();
   }

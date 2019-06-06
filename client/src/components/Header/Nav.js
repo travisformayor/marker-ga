@@ -9,7 +9,12 @@ import uuid from 'uuid';
 const NavItem = posed.div({
   enter: { 
     y: 0, opacity: 1, 
-    delay: ({index}) => index*250},
+    delay: ({index}) => index*200,
+    transition: {
+      duration: 800,
+      ease: 'backOut'
+    }
+  },
   exit: { y: -15, opacity: 0},
 });
 

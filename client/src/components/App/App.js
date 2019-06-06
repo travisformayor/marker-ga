@@ -8,7 +8,7 @@ import AxiosModel from '../../models/axios';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './App.css';
 
-function App(props) {
+const App = (props) => {
   // Hooks
   const [ errors, setErrors ] = useState([]);
   const [ userInfo, setUserInfo ] = useState({
