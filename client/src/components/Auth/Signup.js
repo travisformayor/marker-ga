@@ -3,11 +3,11 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import AxiosModel from '../../models/axios';
-import Error from '../Error/Error';
+import Alert from '../Alert/Alert';
 
 const Signup = ({ close }) => {
   // Hooks
-  const [ errors, setErrors ] = useState([]);
+  const [ alerts, setAlerts ] = useState([]);
   const [ newUser, setUserValues ] = useState({
     username: '', // previous values
     email: '',
@@ -27,22 +27,22 @@ const Signup = ({ close }) => {
     try {
       const response = await AxiosModel.signup(newUser);
       // console.log('Response: ',response);
-      setErrors([]); // clear old errors
+      setAlerts([]); // clear old alerts
       localStorage.token = response.data.token;
       // success outcome: close the modal
       close();
       // history.push(`/profile`)
     } catch(err) {
       // console.log(err.response);
-      setErrors(err.response.data.errors)
+      setAlerts(err.response.data.alerts)
     }
   }
 
-  const getError = (name) => {
-    if (errors.length) {
-      const error = errors.find( error => error.type === name)
-      // console.log(error);
-      if (error) return error.message;
+  const getAlert = (name) => {
+    if (alerts.length) {
+      const alert = alerts.find( alert => alert.type === name)
+      // console.log(alert);
+      if (alert) return alert.message;
     } else return
   }
 
@@ -85,8 +85,8 @@ const Signup = ({ close }) => {
       <form onSubmit={handleSubmit} className={classes.container} noValidate={false} autoComplete="off">
         <TextField
           required
-          helperText={getError('username')}
-          error={getError('username') ? true : false}
+          helperText={getAlert('username')}
+          error={getAlert('username') ? true : false}
           id="outlined-new-username"
           className={classes.textField}
           label="Username"
@@ -99,8 +99,8 @@ const Signup = ({ close }) => {
         />
         <TextField
           required
-          helperText={getError('email')}
-          error={getError('email') ? true : false}
+          helperText={getAlert('email')}
+          error={getAlert('email') ? true : false}
           id="outlined-email-input"
           className={classes.textField}
           label="Email"
@@ -114,8 +114,8 @@ const Signup = ({ close }) => {
         />
         <TextField
           required
-          helperText={getError('password')}
-          error={getError('password') ? true : false}
+          helperText={getAlert('password')}
+          error={getAlert('password') ? true : false}
           id="outlined-password-input"
           className={classes.textField}
           label="Password"
@@ -128,8 +128,8 @@ const Signup = ({ close }) => {
         />
         <TextField
           required
-          helperText={getError('password2')}
-          error={getError('password2') ? true : false}
+          helperText={getAlert('password2')}
+          error={getAlert('password2') ? true : false}
           id="outlined-password2-input"
           className={classes.textField}
           label="Confirm Password"
@@ -140,8 +140,8 @@ const Signup = ({ close }) => {
           margin="normal"
           variant="outlined"
         />
-        {errors.filter(error => error.type === 'extra').map((error, index) => (
-          <Error message={error.message} status={'error'} key={'signup-error'+index} />
+        {alerts.filter(alert => alert.type === 'extra').map((alert, index) => (
+          <Alert message={alert.message} status={'error'} key={'signup-alert'+index} />
         ))}
         <NavButton 
           variant="contained" className={classes.button} type="submit" label="login">

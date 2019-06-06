@@ -7,11 +7,11 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import AxiosModel from '../../models/axios';
-import Error from '../Error/Error';
+import Alert from '../Alert/Alert';
 
 const Login = ({ close }) => {
   // Hooks
-  const [ errors, setErrors ] = useState([]);
+  const [ alerts, setAlerts ] = useState([]);
   const [ userValues, setValues ] = useState({
     username: '',
     password: '',
@@ -33,22 +33,22 @@ const Login = ({ close }) => {
     try {
       const response = await AxiosModel.login(userValues);
       // console.log('Response: ', response);
-      setErrors([]); // clear old errors
+      setAlerts([]); // clear old alerts
       localStorage.token = response.data.token;
       // success outcome: dismiss modal
       close();
       // history.push(`/profile`)
     } catch (err) {
       // console.log(err.response);
-      setErrors(err.response.data.errors)
+      setAlerts(err.response.data.alerts)
     }
   }
 
-  const getError = (name) => {
-    if (errors.length) {
-      const error = errors.find( error => error.type === name)
-      // console.log(error);
-      if (error) return error.message;
+  const getAlert = (name) => {
+    if (alerts.length) {
+      const alert = alerts.find( alert => alert.type === name)
+      // console.log(alert);
+      if (alert) return alert.message;
     } else return
   }
 
@@ -90,8 +90,8 @@ const Login = ({ close }) => {
       <form onSubmit={handleSubmit} className={classes.container} noValidate={false} autoComplete="off">
         <TextField
           required
-          helperText={getError('username')}
-          error={getError('username') ? true : false}
+          helperText={getAlert('username')}
+          error={getAlert('username') ? true : false}
           id="outlined-username"
           className={classes.textField}
           label="Username"
@@ -104,8 +104,8 @@ const Login = ({ close }) => {
         />
         <TextField
           required
-          helperText={getError('password')}
-          error={getError('password') ? true : false}
+          helperText={getAlert('password')}
+          error={getAlert('password') ? true : false}
           id="outlined-adornment-password"
           className={classes.textField}
           label="Password"
@@ -129,8 +129,8 @@ const Login = ({ close }) => {
             ),
           }}
         />
-        {errors.filter(error => error.type === 'extra').map((error, index) => (
-          <Error message={error.message} status={'error'} key={'login-error'+index} />
+        {alerts.filter(alert => alert.type === 'extra').map((alert, index) => (
+          <Alert message={alert.message} status={'error'} key={'login-alert'+index} />
         ))}
         <NavButton 
           variant="contained" className={classes.button} type="submit" label="login">

@@ -4,14 +4,14 @@ import { withRouter } from "react-router";
 import Header from '../Header/Header';
 import Profile from '../Profile/Profile';
 import Create from '../Create/Create';
-import Error from '../Error/Error';
+import Alert from '../Alert/Alert';
 import AxiosModel from '../../models/axios';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './App.css';
 
 const App = (props) => {
   // Hooks
-  const [ errors, setErrors ] = useState([]);
+  const [ alerts, setAlerts ] = useState([]);
   const [ userInfo, setUserInfo ] = useState({
     loggedIn: false,
     user: {},
@@ -31,8 +31,8 @@ const App = (props) => {
         // console.log('user state here:', userInfo)
       } catch(err) {
         // console.log('err.response');
-        // setErrors(err.response.data.errors);
-        setErrors(err.response.data.errors);
+        // setAlerts(err.response.data.alerts);
+        setAlerts(err.response.data.alerts);
       }
     }
   }
@@ -55,8 +55,8 @@ const App = (props) => {
       <CssBaseline />
       <Header userInfo={userInfo} logOut={logOut} getProfile={getProfile} />
       <main>
-        {errors.map((error, index) => (
-          <Error message={error.message} status={'error'} key={'root-error'+index} />
+        {alerts.map((alert, index) => (
+          <Alert message={alert.message} status={'error'} key={'root-alert'+index} />
         ))}
         <Switch>
           <Route path="/profile" render={() => <Profile user={userInfo.user} /> } />

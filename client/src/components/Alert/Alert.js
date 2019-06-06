@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
-const Error = ({ message, status }) => {
+const Alert = ({ message, status }) => {
   const useStyles = makeStyles(theme => ({
     alert: {
       borderRadius: '4px',
@@ -45,9 +45,9 @@ const Error = ({ message, status }) => {
 };
 
 // check the var type of the props
-Error.propTypes = {
+Alert.propTypes = {
   message: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired
 }
 
-export default Error;
+export default Alert;

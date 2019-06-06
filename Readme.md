@@ -110,4 +110,4 @@ note: switch from market to gallery in final readme challenges
 for env's like s3 credentials and jwt secret key
 
 - shows username in profile avatar drop down
-- error message has themes you can toggle
+- alert message has themes you can toggle
