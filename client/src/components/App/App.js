@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { withRouter } from "react-router";
 import Header from '../Header/Header';
 import Profile from '../Profile/Profile';
 import Error from '../Error/Error';
@@ -7,7 +8,7 @@ import AxiosModel from '../../models/axios';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './App.css';
 
-function App() {
+function App(props) {
   // Hooks
   const [ errors, setErrors ] = useState([]);
   const [ userInfo, setUserInfo ] = useState({
@@ -41,6 +42,7 @@ function App() {
       user: {}
     })
     localStorage.clear();
+    props.history.push('/');
   }
 
   useEffect(() => {
@@ -63,4 +65,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);

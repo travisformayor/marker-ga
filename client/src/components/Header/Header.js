@@ -22,12 +22,7 @@ function Header(props) {
   const [ titleState, setTitle ] = useState({
     ...defaultTitle,
   })
-
   const open = Boolean(anchor);
-
-  useEffect(() => {
-    setAuth(loggedIn);
-  },[loggedIn]);
 
   const navLinks = [
     {name: 'main', path: '', color: '#3f51b5, 30%, #6573c3'}, // dark blue
@@ -36,13 +31,14 @@ function Header(props) {
     {name: 'artists', path: 'artists', color: '#4caf50, 30%, #6fbf73'}, // green
     {name: 'profile', path: 'profile', color: '#673ab7, 30%, #8561c5'}, // purple
   ]
-
+  
   const getPath = () => {
     const pathname = props.location.pathname.split('/')[1]; // ignore any trailing /pages
     // console.log('current path: ', pathname)
     // Set state for the other paths
     const newPaths = navLinks.filter(navOption => navOption.path !== pathname);
-    setPaths(newPaths)
+    setPaths(newPaths); // all paths except current page
+    
     // Set the title bar state
     const newTitle = navLinks.find(navOption => navOption.path === pathname);
     if (newTitle) {
@@ -55,7 +51,12 @@ function Header(props) {
       setTitle({...defaultTitle})
     }
   }
-
+  
+  useEffect(() => {
+    // record logged in status
+    setAuth(loggedIn);
+  },[loggedIn]);
+  
   useEffect(() => {
     getPath();
   },[props.location.pathname]); // re-run whenever path changes
@@ -133,7 +134,7 @@ function Header(props) {
           )}
         </Toolbar>
       </AppBar>
-      <Nav paths={paths} />
+      <Nav paths={paths} auth={auth}/>
       {/* <button onClick={() => setAuth(!auth)}>
         Login - {auth ? "true" : "false"}
       </button> */}

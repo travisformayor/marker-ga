@@ -4,7 +4,7 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 const Nav = (props) => {
-  const { paths } = props
+  const { paths, auth } = props
 
   // CSS Class Styles
   const useStyles = makeStyles(theme => ({
@@ -37,13 +37,17 @@ const Nav = (props) => {
 
   return (
     <div className={classes.navButtons}>
-      {paths.map((nav, index) => (
+      {/* Filter out profile if user is not logged in */}
+      {auth ? paths.map((nav, index) => (
         <NavButton 
           component={Link} to={nav.path} key={'nav-button'+index}
           style={{ background: `linear-gradient(${nav.color})` }}
-        >
-          {nav.name}
-        </NavButton>
+        >{nav.name}</NavButton>
+      )) : paths.filter(path => path.path !== 'profile').map((nav, index) => (
+        <NavButton 
+          component={Link} to={nav.path} key={'nav-button'+index}
+          style={{ background: `linear-gradient(${nav.color})` }}
+        >{nav.name}</NavButton>
       ))}
     </div>
   )
