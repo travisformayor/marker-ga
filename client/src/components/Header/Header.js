@@ -14,13 +14,13 @@ import Nav from './Nav';
 
 function Header(props) {
   const { userInfo: { loggedIn }, logOut, getProfile } = props;
+  const defaultTitle = {title: '404', color: 'orange, beige'}
   // Hooks
   const [ auth, setAuth ] = useState(false);
   const [ anchor, setAnchor ] = useState(null);
   const [ paths, setPaths ] = useState([]);
   const [ titleState, setTitle ] = useState({
-    title: '',
-    color: 'yellow, beige',
+    ...defaultTitle,
   })
 
   const open = Boolean(anchor);
@@ -29,33 +29,36 @@ function Header(props) {
     setAuth(loggedIn);
   },[loggedIn]);
 
-  // console.log('path ', props.location.pathname)
-
   const navLinks = [
-    {name: 'main', path: '/', color: '#3f51b5, 30%, #6573c3'}, // dark blue
-    {name: 'create', path: '/create', color: '#2196f3, 30%, #4dabf5'}, // lite blue
-    {name: 'trade', path: '/trade', color: '#ff5722, 30%, #ff784e'}, // orange
-    {name: 'artists', path: '/artists', color: '#4caf50, 30%, #6fbf73'}, // green
-    {name: 'profile', path: '/profile', color: '#673ab7, 30%, #8561c5'}, // purple
+    {name: 'main', path: '', color: '#3f51b5, 30%, #6573c3'}, // dark blue
+    {name: 'create', path: 'create', color: '#2196f3, 30%, #4dabf5'}, // lite blue
+    {name: 'trade', path: 'trade', color: '#ff5722, 30%, #ff784e'}, // orange
+    {name: 'artists', path: 'artists', color: '#4caf50, 30%, #6fbf73'}, // green
+    {name: 'profile', path: 'profile', color: '#673ab7, 30%, #8561c5'}, // purple
   ]
 
   const getPath = () => {
-    const { pathname } = props.location;
+    const pathname = props.location.pathname.split('/')[1]; // ignore any trailing /pages
     console.log('current path: ', pathname)
     // Set state for the other paths
     const newPaths = navLinks.filter(navOption => navOption.path !== pathname);
     setPaths(newPaths)
     // Set the title bar state
     const newTitle = navLinks.find(navOption => navOption.path === pathname);
-    setTitle({
-      title: newTitle.name,
-      color: newTitle.color,
-    })
+    if (newTitle) {
+      setTitle({
+        title: newTitle.name,
+        color: newTitle.color,
+      })
+    } else {
+      // console.log('404')
+      setTitle({...defaultTitle})
+    }
   }
 
   useEffect(() => {
     getPath();
-  },[props.location.pathname]);
+  },[props.location.pathname]); // re-run whenever path changes
 
   // Profile Menu drop down menu functions
   const handleMenu = (event) => {
