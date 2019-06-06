@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { withRouter } from "react-router";
-import { makeStyles } from '@material-ui/core/styles';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuItem from '@material-ui/core/MenuItem';
-import Toolbar from '@material-ui/core/Toolbar';
-import AppBar from '@material-ui/core/AppBar';
-import Menu from '@material-ui/core/Menu';
-import AuthDialog from '../Auth/AuthDialog';
 import Nav from './Nav';
+import Title from './Title';
 
-function Header(props) {
+const Header = (props) => {
   const { userInfo: { loggedIn, user: { username } }, logOut, getProfile } = props;
   const defaultTitle = {title: '404', color: 'orange, beige'}
   // Hooks
   const [ auth, setAuth ] = useState(false);
-  const [ anchor, setAnchor ] = useState(null);
   const [ paths, setPaths ] = useState([]);
   const [ titleState, setTitle ] = useState({
     ...defaultTitle,
-  })
-  const open = Boolean(anchor);
-
+  });
+ 
   const navLinks = [
     {name: 'main', path: '', color: '#3f51b5, 30%, #6573c3'}, // dark blue
     {name: 'create', path: 'create', color: '#2196f3, 30%, #4dabf5'}, // lite blue
@@ -81,88 +70,15 @@ function Header(props) {
     getNav();
   },[props.location.pathname]);
 
-  // Profile Menu drop down menu functions
-  const handleMenu = (event) => {
-    setAnchor(event.currentTarget);
-  }
-  const handleClose = () => {
-    setAnchor(null);
-  }
-  const handleLogout = () => {
-    logOut();
-    handleClose();
-  }
-
-  // CSS Class Styles
-  const useStyles = makeStyles(theme => ({
-    topBar: {
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: '20px',
-      textAlign: 'center',
-      background: `linear-gradient(${titleState.color})`, // dark blue
-    },
-    title: {
-      textTransform: 'capitalize',
-    },
-    profileControl: {
-      position: 'absolute',
-      right: 0,
-      marginRight: '20px',
-    },
-    dropMenu: {
-      marginTop: 50,
-    },
-    username: {
-      textTransform: 'capitalize',
-      borderBottom: '1px solid grey',
-    }
-  }));
-  const classes = useStyles();
-
   return (
     <>
-      <AppBar position="static">
-        <Toolbar className={classes.topBar}>
-          <Typography variant="h3" className={classes.title}>
-            {titleState.title}
-          </Typography>
-          {auth ? (
-            <div className={classes.profileControl}>
-              <IconButton
-                aria-label="Profile Options"
-                aria-controls="profile-menu"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              ><AccountCircle style={{ fontSize: 40 }} /></IconButton>
-              <Menu
-                className={classes.dropMenu}
-                id="profile-menu"
-                open={open}
-                onClose={handleClose}
-                anchorEl={anchor}
-              >
-                <MenuItem disabled className={classes.username}>
-                  {username}
-                </MenuItem>
-                <MenuItem onClick={handleClose} component={Link} to="/profile">
-                    Profile
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                  Logout
-                </MenuItem>
-              </Menu>
-            </div>
-          ) : (
-            <div className={classes.profileControl}>
-              <AuthDialog getProfile={getProfile} />
-            </div>
-          )}
-        </Toolbar>
-      </AppBar>
+      <Title 
+        username={username}
+        logOut={logOut}
+        getProfile={getProfile}
+        auth={auth}
+        titleState={titleState}
+      />
       <Nav paths={paths} />
     </>
   );
