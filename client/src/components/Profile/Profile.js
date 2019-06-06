@@ -1,7 +1,4 @@
 import React from 'react';
-import { mergeClasses } from '@material-ui/styles';
-// import Error from '../Error/Error';
-// import AxiosModel from '../../models/axios';
 
 const Profile = (props) => {
   const { user: {name, username, email, signupDate }} = props // avatar, twitter

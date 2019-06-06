@@ -93,6 +93,7 @@ const Signup = ({ close }) => {
           onChange={handleChange}
           value={newUser.username}
           name="username"
+          type="text"
           margin="normal"
           variant="outlined"
         />

@@ -98,6 +98,7 @@ const Login = ({ close }) => {
           onChange={handleChange}
           value={userValues.username}
           name="username"
+          type="text"
           margin="normal"
           variant="outlined"
         />
