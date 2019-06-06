@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import AxiosModel from '../../models/axios';
 import Error from '../Error/Error';
 
-const Login = () => {
+const Login = ({ close }) => {
   // Hooks
   const [ errors, setErrors ] = useState([]);
   const [ userValues, setValues ] = useState({
@@ -30,18 +30,16 @@ const Login = () => {
   
   const handleSubmit = async e => {
     e.preventDefault();
-    console.log('hello')
     try {
-      console.log('try')
       const response = await AxiosModel.login(userValues);
-      console.log('Response: ', response);
+      // console.log('Response: ', response);
       setErrors([]); // clear old errors
       localStorage.token = response.data.token;
-      // success outcome: redirect? dismiss modal?
+      // success outcome: dismiss modal
+      close();
       // history.push(`/profile`)
     } catch (err) {
-      console.log('catch')
-      console.log(err.response);
+      // console.log(err.response);
       setErrors(err.response.data.errors)
     }
   }
@@ -54,7 +52,6 @@ const Login = () => {
     } else return
   }
 
-
   // Nav button css
   const NavButton = withStyles({
     root: {
@@ -64,7 +61,6 @@ const Login = () => {
       color: 'white',
       height: 50,
       padding: '0px 40px',
-      // marginTop: '30px',
       boxShadow: '0 3px 5px 5px rgba(255, 105, 135, .3)',
     },
     label: {
@@ -91,7 +87,7 @@ const Login = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={classes.container} noValidate autoComplete="off">
+      <form onSubmit={handleSubmit} className={classes.container} noValidate={false} autoComplete="off">
         <TextField
           required
           helperText={getError('username')}

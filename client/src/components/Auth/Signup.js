@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import AxiosModel from '../../models/axios';
 import Error from '../Error/Error';
 
-const Signup = () => {
+const Signup = ({ close }) => {
   // Hooks
   const [ errors, setErrors ] = useState([]);
   const [ newUser, setUserValues ] = useState({
@@ -29,10 +29,11 @@ const Signup = () => {
       // console.log('Response: ',response);
       setErrors([]); // clear old errors
       localStorage.token = response.data.token;
-      // success outcome: redirect? dismiss modal?
+      // success outcome: close the modal
+      close();
       // history.push(`/profile`)
     } catch(err) {
-      // console.log(err.response);
+      console.log(err.response);
       setErrors(err.response.data.errors)
     }
   }
@@ -81,12 +82,12 @@ const Signup = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={classes.container} noValidate autoComplete="off">
+      <form onSubmit={handleSubmit} className={classes.container} noValidate={false} autoComplete="off">
         <TextField
           required
           helperText={getError('username')}
           error={getError('username') ? true : false}
-          id="outlined-username"
+          id="outlined-new-username"
           className={classes.textField}
           label="Username"
           onChange={handleChange}
