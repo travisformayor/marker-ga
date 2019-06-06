@@ -32,14 +32,25 @@ function Header(props) {
     {name: 'profile', path: 'profile', color: '#673ab7, 30%, #8561c5'}, // purple
   ]
   
-  const getPath = () => {
+  // Nav and Title setting methods
+  const getNav = () => {
     const pathname = props.location.pathname.split('/')[1]; // ignore any trailing /pages
-    // console.log('current path: ', pathname)
-    // Set state for the other paths
-    const newPaths = navLinks.filter(navOption => navOption.path !== pathname);
-    setPaths(newPaths); // all paths except current page
-    
+    if (auth) {
+      // true - logged in
+      const newPaths = navLinks.filter(navOption => navOption.path !== pathname);
+      setPaths(newPaths); // all paths except current page
+    } else {
+      // false - logged out
+      const newPaths = navLinks.filter(navOption => {
+        return navOption.path !== pathname && navOption.path !== 'profile';
+      });
+      setPaths(newPaths); // all paths except current page and profile
+    }
+  }
+
+  const getTitle = () => {
     // Set the title bar state
+    const pathname = props.location.pathname.split('/')[1]; // ignore any trailing /pages
     const newTitle = navLinks.find(navOption => navOption.path === pathname);
     if (newTitle) {
       setTitle({
@@ -51,15 +62,24 @@ function Header(props) {
       setTitle({...defaultTitle})
     }
   }
-  
+
+  // Use Effects
   useEffect(() => {
-    // record logged in status
+    // loggedIn prop changed
+    // Save to state as auth
     setAuth(loggedIn);
   },[loggedIn]);
-  
+
   useEffect(() => {
-    getPath();
-  },[props.location.pathname]); // re-run whenever path changes
+    // Auth state changed
+    getNav()
+  },[auth])
+
+  useEffect(() => {
+    // url path changed
+    getTitle();
+    getNav();
+  },[props.location.pathname]);
 
   // Profile Menu drop down menu functions
   const handleMenu = (event) => {
@@ -143,7 +163,7 @@ function Header(props) {
           )}
         </Toolbar>
       </AppBar>
-      <Nav paths={paths} auth={auth}/>
+      <Nav paths={paths} />
     </>
   );
 }
