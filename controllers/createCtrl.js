@@ -14,7 +14,7 @@ module.exports = {
     // 'app.use(fileUpload...' middleware in server.js aborts on files to large before getting here
     if (!req.files) {
       return res.status(400).json({status: 400, alerts: [{message: 'No file uploaded', type: 'upload'}]});
-    } 
+    }
     const { file } = req.files;
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
       // File is jpg or png, great!

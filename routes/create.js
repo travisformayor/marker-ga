@@ -6,9 +6,9 @@ const controllers = require('../controllers');
 // ToDo: enable routes requiring auth to create cards
 // Note: Hide the create nav button when not logged in, deny the route, don't allow api calls
 router.post('/uploadimage', controllers.createCtrl.uploadImage); // Upload an image
-router.post('/savecard', controllers.createCtrl.saveCard); // Save the card
-router.post('/delcard', controllers.createCtrl.deleteCard); // Delete a draft card
-router.post('/cards', controllers.createCtrl.getCards); // Get info on all the cards
+// router.post('/savecard', controllers.createCtrl.saveCard); // Save the card
+// router.post('/delcard', controllers.createCtrl.deleteCard); // Delete a draft card
+// router.post('/cards', controllers.createCtrl.getCards); // Get info on all the cards
 // router.post('/card', controllers.createCtrl.getCard); // Get info on a card
 
 // Example from auth routes
