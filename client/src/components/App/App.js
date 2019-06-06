@@ -1,37 +1,62 @@
-import React from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import Header from '../Header/Header';
-import Signup from '../Auth/Signup';
-import Login from '../Auth/Login';
-import Logout from '../Auth/Logout';
 import Profile from '../Profile/Profile';
+import Error from '../Error/Error';
+import AxiosModel from '../../models/axios';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import './App.css';
 
 function App() {
+  // Hooks
+  const [ errors, setErrors ] = useState([]);
+  const [ userInfo, setUserInfo ] = useState({
+    loggedIn: false,
+    user: {},
+  })
+
+  const getProfile = async () => {
+    // console.log('token in localstore: ', localStorage.token)
+    if (localStorage.token) {
+      try {
+        const response = await AxiosModel.getProfile(localStorage.token);
+        // console.log('Token check went through', response.data);
+        const { foundUser } = response.data
+        await setUserInfo({
+          loggedIn: true,
+          user: foundUser
+        });
+        // console.log('user state here:', userInfo)
+      } catch(err) {
+        // console.log('err.response');
+        // setErrors(err.response.data.errors);
+        setErrors(err.response.data.errors);
+      }
+    }
+  }
+
+  const logOut = () => {
+    setUserInfo({
+      loggedIn: false,
+      user: {}
+    })
+    localStorage.clear();
+  }
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
   return (
     <>
       <CssBaseline />
-      <Header />
-      <h1>Test</h1>
-      {/* <Signup />
-      <Login /> */}
-      <Logout />
-      {/* <Link to={`/post/${post._id}`}>{post.title}</Link> */}
-      {/* <Profile /> */}
-
-			{/* <NavBar isLoggedIn={isLoggedIn} user={user} /> */}
+      <Header userInfo={userInfo} logOut={logOut} getProfile={getProfile} />
       <main>
-        <Link to='/'>Home</Link>
+        {errors.map((error, index) => (
+          <Error message={error.message} key={index} />
+        ))}
         <Switch>
-          <Route path="/signup" render={() => <Signup /> } />
-          <Route path="/login" render={() => <Login /> } />
-          <Route path="/profile" render={() => <Profile /> } />
-          {/* <Route path="/logout" render={props => {
-            return (
-              <LogOut isLoggedIn={isLoggedIn} handleLogOut={this.handleLogOut} />
-            );
-          }} /> */}
+          <Route path="/profile" render={() => <Profile user={userInfo.user} /> } />
         </Switch>
       </main>
     </>

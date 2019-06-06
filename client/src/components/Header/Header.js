@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -9,19 +9,30 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import Menu from '@material-ui/core/Menu';
+import AuthDialog from '../Auth/AuthDialog';
 
-function Header() {
+function Header(props) {
+  const { userInfo: { loggedIn }, logOut, getProfile } = props;
   // Hooks
-  const [ auth, setAuth ] = useState(true);
-  const [anchor, setAnchor] = useState(null);
+  const [ auth, setAuth ] = useState(false);
+  const [ anchor, setAnchor ] = useState(null);
+
   const open = Boolean(anchor);
 
+  useEffect(() => {
+    setAuth(loggedIn);
+  },[loggedIn]);
+
   // Profile Menu drop down menu functions
-  function handleMenu(event) {
+  const handleMenu = (event) => {
     setAnchor(event.currentTarget);
   }
-  function handleClose() {
+  const handleClose = () => {
     setAnchor(null);
+  }
+  const handleLogout = () => {
+    logOut();
+    handleClose();
   }
 
   // Nav button css
@@ -97,39 +108,36 @@ function Header() {
                 onClose={handleClose}
                 anchorEl={anchor}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose} component={Link} to="/profile">
+                    Profile
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
           ) : (
-            <Button
-              className={classes.profileControl}
-              component={Link}
-              to="/auth"
-              color="inherit"
-            >
-              Login / Signup
-            </Button>
+            <div className={classes.profileControl}>
+              <AuthDialog getProfile={getProfile} />
+            </div>
           )}
         </Toolbar>
       </AppBar>
       <div className={classes.navBottom}>
-        <NavButton component={Link} to="/signup">
-          signup
+        <NavButton component={Link} to="/">
+          main
         </NavButton>
-        <NavButton component={Link} to="/login">
-          login
+        <NavButton component={Link} to="/create">
+          create
         </NavButton>
-        <NavButton component={Link} to="/logout">
-          logout
+        <NavButton component={Link} to="/artists">
+          artists
         </NavButton>
         <NavButton component={Link} to="/profile">
           profile
         </NavButton>
       </div>
-      <button onClick={() => setAuth(!auth)}>
+      {/* <button onClick={() => setAuth(!auth)}>
         Login - {auth ? "true" : "false"}
-      </button>
+      </button> */}
     </>
   );
 }
