@@ -1,8 +1,18 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jwt-simple')
+const AWS = require('aws-sdk');
 
 // Database
 const db = require('../models');
+
+// AWS S3 Init
+const config = {
+  apiVersion: '2006-03-01',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_S3_REGION
+};
+const S3 = new AWS.S3(config);
 
 // Misc
 const genericError = "Something went wrong, please try again";
@@ -13,7 +23,13 @@ module.exports = {
   uploadImage: async (req, res) => {
     // 'app.use(fileUpload...' middleware in server.js aborts on files to large before getting here
     if (!req.files) {
-      return res.status(400).json({status: 400, alerts: [{message: 'No file uploaded', type: 'upload'}]});
+      return res.status(400).json({
+        alerts: [{
+          message: 'No file uploaded', 
+          status: 'error', 
+          type: 'upload',
+        }],
+      });
     }
     const { file } = req.files;
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
@@ -40,25 +56,56 @@ module.exports = {
           if (fileETag === file.md5) {
             // ToDo: switch this path  to an env variable, for different buckets on different deploys
             const filePath = `https://marker-dev-981f2859.s3-us-west-2.amazonaws.com/${fileName}`
-            return res.status(200).json({msg: 'Upload successful', fileName, filePath});
-            return res.status(200).json({alerts: [{message: 'No file uploaded', type: 'upload'}]});
+            return res.status(200).json({
+              alerts: [{
+                message: 'Upload successful', 
+                status: 'info', 
+                type: 'upload',
+              }],
+              fileName, filePath
+            });
           } else {
             // The hash returned by AWS does not match the file we received
             // Upload was potentially cut off or corrupted in some way
-            return res.status(500).json({msg: 'Error uploading file. Please try again'})
+            return res.status(500).json({
+              alerts: [{
+                message: 'Error uploading file. Please try again', 
+                status: 'error', 
+                type: 'upload',
+              }], 
+            });
           }
         } else {
           // The response didn't include the ETag md5 hash
           // The upload failed to complete in some unexpected way
-          return res.status(500).json({msg: 'Error uploading file. Please try again'})
+          return res.status(500).json({
+            alerts: [{
+              message: 'Error uploading file. Please try again', 
+              status: 'error', 
+              type: 'upload',
+            }], 
+          });
         }
       } catch (err) {
         // Something went wrong
         console.error(err, err.stack);
-        return res.status(500).json({msg: genericError, alertData: err})
+        return res.status(500).json({
+          alerts: [{
+            message: genericError, 
+            status: 'error', 
+            type: 'upload',
+          }], 
+          errData: err,
+        });
       }
     } else {
-      return res.status(400).json({msg: 'Unsupported file type'})
+      return res.status(400).json({
+        alerts: [{
+          message: 'Unsupported file type', 
+          status: 'error', 
+          type: 'upload',
+        }],
+      });
     }
   },
 

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import Message from './Message';
+import Alert from '../Alert/Alert';
 import Progress from './Progress';
 import axios from 'axios';
 
 
-const FileUpload = () => {
+const CardUpload = () => {
   const [ file, setFile ] = useState('');
   const [ filename, setFilename ] = useState('Choose File');
   const [ uploadedFile, setUploadedFile ] = useState({});
-  const [ message, setMessage ] = useState('');
+  const [ alerts, setAlerts ] = useState([]);
   const [ uploadPercentage, setUploadPercentage ] = useState(0);
 
   const onChange = e => {
@@ -23,7 +23,7 @@ const FileUpload = () => {
     formData.append('file', file); // sent as req.files.file in the backend
     
     try {
-      const res = await axios.post('/upload', formData, {
+      const res = await axios.post('/api/v1/create/uploadimage', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -39,28 +39,37 @@ const FileUpload = () => {
       });
       setTimeout(() => setUploadPercentage(0), 10000);
       // save response object into state
-      const { fileName, filePath, msg } = res.data; // from the backend
+      const { fileName, filePath, alerts } = res.data; // from the backend
       console.log('response: ', res.data);
       setUploadedFile({fileName, filePath});
       // console.log('File uploaded: ', uploadedFile);
-      setMessage({msg: msg, status: 'info'}); // 'File Uploaded'
+      setAlerts(alerts)
+      // setAlerts({msg: msg, status: 'info'}); // 'File Uploaded'
 
     } catch(err) {
         console.error(err);
         setUploadPercentage(0);
-        if (err.response.status === 500) {
-          setMessage({msg: 'There was a problem with the server', status: 'danger'});
-        } else if (err.response.status === 413) {
-          setMessage({msg: 'The file size is too damn high!', status: 'danger'});
+        // if (err.response.status === 500) {
+        //   setAlerts({message: 'There was a problem with the server', status: 'error'});
+        // } else 
+        if (err.response.status === 413) {
+          setAlerts({
+            message: 'The file size is too damn high!', 
+            status: 'error',
+            type: 'upload',
+          });
         } else { 
           // stuff like the 'no file uploaded' message from server
-          setMessage({msg: err.response.data.msg, status: 'danger'});
+          setAlerts(err.response.data.alerts);
         }
     }
   }
   return (
     <>
-      {message ? <Message msg={message.msg} status={message.status}/> : null}
+      {console.log('alerts: ', alerts)}
+      {alerts.filter(alert => alert.type === 'upload').map((alert, index) => (
+        <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
+      ))}
       <form onSubmit={onSubmit}>
         <div className="custom-file mb-4">
           <input type="file" className="custom-file-input" id="customFile" onChange={onChange} />
@@ -82,4 +91,4 @@ const FileUpload = () => {
   )
 }
 
-export default FileUpload;
+export default CardUpload;
