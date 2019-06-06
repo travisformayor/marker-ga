@@ -2,9 +2,29 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import posed from 'react-pose';
+
+// Define Animations
+const TopNav = posed.div({
+  load: {
+    // y: "0%",
+    delayChildren: 200,
+    staggerChildren: 50
+  },
+});
+const NavItem = posed.div({
+  load: { y: 0, opacity: 1 },
+  hide: { y: -10, opacity: 0 }
+});
 
 const Nav = (props) => {
   const { paths } = props
+  // Test Hooks
+  const [isOpen, setOpen] = useState(false);
+  
+  useEffect(() => {
+    
+  },[])
 
   // CSS Class Styles
   const useStyles = makeStyles(theme => ({
@@ -36,15 +56,22 @@ const Nav = (props) => {
   })(Button);
 
   return (
-    <div className={classes.navButtons}>
-      {paths.map((nav, index) => (
-        <NavButton
-          component={Link} to={nav.path} key={'nav-button'+index}
-          style={{ background: `linear-gradient(${nav.color})` }}
-        >{nav.name}
-        </NavButton>
-      ))}
-    </div>
+    <>
+      <TopNav className={classes.navButtons} pose={isOpen ? "load" : "hide"}>
+        {paths.map((nav, index) => (
+          <NavItem key={'nav-button'+index} >
+            <NavButton component={Link} to={nav.path}
+              style={{ background: `linear-gradient(${nav.color})` }}
+            >
+              {nav.name}
+            </NavButton>
+          </NavItem>
+        ))}
+      </TopNav>
+      <button onClick={() => setOpen(!isOpen)}>
+        Click - {isOpen ? "true" : "false"}
+      </button>
+    </>
   )
 }
 
