@@ -12,3 +12,4 @@ logging out dumps you to main
 logging in shows profile in nav
 being logged out removes profile from nav
 nav only shows pages you are not currently on
+react-pose
