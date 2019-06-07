@@ -5,26 +5,13 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
-import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import Menu from "@material-ui/core/Menu";
 import AuthDialog from "../Auth/AuthDialog";
-import posed, { PoseGroup } from 'react-pose';
-import { tween } from 'popmotion';
+import posed from 'react-pose';
 import uuid from 'uuid'
 
 // Define animations
-const TitleText = posed.div({
-  enter: { 
-    y: 0,
-    transition: {
-      y: { 
-        type: 'spring', 
-      },
-      // default: { duration: 1000 },
-  }},
-  exit: { y: -100 }
-});
 const TitleBar = posed.div({
   // pass props to here of the current and previous colors
   old: {
@@ -37,6 +24,10 @@ const TitleBar = posed.div({
       ease: 'linear',
     }
   }
+});
+const TitleText = posed.div({
+  enter: { y: 0 },
+  exit: { y: -100 }
 });
 
 const Title = (props) => {
@@ -51,20 +42,19 @@ const Title = (props) => {
   const open = Boolean(anchor);
 
   useEffect(() => {
-    // Title changed, flip switch back to default
-    setToggle(false)
-
     // Update the colors to the new values
     setOld((prevNav && prevNav.color) || '#ffa500, 30%, #f5f5dc')
     setNew(titleState.color)
+  },[prevNav, titleState])
 
-    // Wait a tiny bit, then trigger the animations
+  useEffect(() => {
+    // start toggle. set to false
+    setToggle(false)
+    // wait a tiny bit then trigger the animations
     setTimeout(() =>{
       setToggle(true)
-    }, 100)
-
-  },[titleState])
-
+    }, 200)
+  },[oldColor, newColor])
 
   // Profile Menu drop down menu functions
   const handleMenu = (event) => {
@@ -78,9 +68,6 @@ const Title = (props) => {
     handleClose();
   }
 
-  // console.log('previous path: ', prevPath.substr(1))
-  // console.log('prev color: ', prevNav.color)
-  
   // CSS Class Styles
   const useStyles = makeStyles(theme => ({
     topBar: {
@@ -90,7 +77,7 @@ const Title = (props) => {
       alignItems: 'center',
       padding: '20px',
       textAlign: 'center',
-      // background: `linear-gradient(${})`, // dark blue
+      // background: `linear-gradient(${})`,
     },
     title: {
       textTransform: 'capitalize',
@@ -112,20 +99,17 @@ const Title = (props) => {
 
   return (
     <AppBar position="static">
-      {/* <TitleBar pose={'load'}> */}
         <TitleBar 
           oldC={oldColor}
           newC={newColor}
           pose={animateToggle ? 'new' : 'old'} 
           className={classes.topBar}>
-          {/* <PoseGroup> */}
             <TitleText key={uuid()}
               pose={animateToggle ? 'enter' : 'exit'}>
               <Typography variant="h3" className={classes.title}>
                 {titleState.title}
               </Typography>
             </TitleText>
-          {/* </PoseGroup> */}
           {auth ? (
           <div className={classes.profileControl}>
             <IconButton
@@ -158,7 +142,6 @@ const Title = (props) => {
             <AuthDialog getProfile={getProfile} />
           </div>
           )}
-        {/* </Toolbar> */}
       </TitleBar>
     </AppBar>
   );
