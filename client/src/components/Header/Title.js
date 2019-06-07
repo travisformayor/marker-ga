@@ -27,7 +27,8 @@ const TitleText = posed.div({
   exit: { y: -100 }
 })
 
-const Title = ({ username, logOut, getProfile, auth, titleState }) => {
+const Title = (props) => {
+  const { username, logOut, getProfile, auth, titleState, prevPath } = props;
   // Hooks
   const [ anchor, setAnchor ] = useState(null);
   const open = Boolean(anchor);
@@ -73,6 +74,7 @@ const Title = ({ username, logOut, getProfile, auth, titleState }) => {
   }));
   const classes = useStyles();
 
+  console.log('previous path: ', prevPath)
   return (
     <AppBar position="static">
       <Toolbar className={classes.topBar}>

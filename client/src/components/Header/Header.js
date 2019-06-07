@@ -8,6 +8,7 @@ const Header = (props) => {
   const defaultTitle = {title: '404', color: 'orange, beige'}
   // Hooks
   const [ auth, setAuth ] = useState(false);
+  const [ prevPath, setPrevPath ] = useState('');
   const [ paths, setPaths ] = useState([]);
   const [ titleState, setTitle ] = useState({
     ...defaultTitle,
@@ -78,8 +79,9 @@ const Header = (props) => {
         getProfile={getProfile}
         auth={auth}
         titleState={titleState}
+        prevPath={prevPath}
       />
-      <Nav paths={paths} />
+      <Nav paths={paths} setPrevPath={setPrevPath} />
     </>
   );
 }
