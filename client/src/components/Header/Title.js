@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -10,6 +10,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Menu from "@material-ui/core/Menu";
 import AuthDialog from "../Auth/AuthDialog";
 import posed, { PoseGroup } from 'react-pose';
+import { tween } from 'popmotion';
 import uuid from 'uuid'
 
 // Define animations
@@ -19,19 +20,51 @@ const TitleText = posed.div({
     transition: {
       y: { 
         type: 'spring', 
-        // stiffness: 1000, 
-        // damping: 15 
       },
-    default: { duration: 300 }
+      // default: { duration: 1000 },
   }},
   exit: { y: -100 }
-})
+});
+const TitleBar = posed.div({
+  // pass props to here of the current and previous colors
+  old: {
+    background: ({oldC}) => `linear-gradient(${oldC})`,
+  },
+  new: {
+    background: ({newC}) => `linear-gradient(${newC})`,
+    transition: { 
+      duration: 500,
+      ease: 'linear',
+    }
+  }
+});
 
 const Title = (props) => {
-  const { username, logOut, getProfile, auth, titleState, prevPath } = props;
+  const { username, logOut, getProfile, auth, titleState, prevPath, navLinks } = props;
+  // Get more info on previous path
+  const prevNav = navLinks.find(nav => nav.path === prevPath.substr(1))
   // Hooks
   const [ anchor, setAnchor ] = useState(null);
+  const [ animateToggle, setToggle ] = useState(false);
+  const [ oldColor, setOld ] = useState((prevNav && prevNav.color) || '#ffa500, 30%, #f5f5dc');
+  const [ newColor, setNew ] = useState(titleState.color);
   const open = Boolean(anchor);
+
+  useEffect(() => {
+    // Title changed, flip switch back to default
+    setToggle(false)
+
+    // Update the colors to the new values
+    setOld((prevNav && prevNav.color) || '#ffa500, 30%, #f5f5dc')
+    setNew(titleState.color)
+
+    // Wait a tiny bit, then trigger the animations
+    setTimeout(() =>{
+      setToggle(true)
+    }, 100)
+
+  },[titleState])
+
 
   // Profile Menu drop down menu functions
   const handleMenu = (event) => {
@@ -45,6 +78,9 @@ const Title = (props) => {
     handleClose();
   }
 
+  // console.log('previous path: ', prevPath.substr(1))
+  // console.log('prev color: ', prevNav.color)
+  
   // CSS Class Styles
   const useStyles = makeStyles(theme => ({
     topBar: {
@@ -54,7 +90,7 @@ const Title = (props) => {
       alignItems: 'center',
       padding: '20px',
       textAlign: 'center',
-      background: `linear-gradient(${titleState.color})`, // dark blue
+      // background: `linear-gradient(${})`, // dark blue
     },
     title: {
       textTransform: 'capitalize',
@@ -74,16 +110,23 @@ const Title = (props) => {
   }));
   const classes = useStyles();
 
-  console.log('previous path: ', prevPath)
   return (
     <AppBar position="static">
-      <Toolbar className={classes.topBar}>
-        <PoseGroup><TitleText key={uuid()}>
-        <Typography variant="h3" className={classes.title}>
-          {titleState.title}
-        </Typography>
-        </TitleText></PoseGroup>
-        {auth ? (
+      {/* <TitleBar pose={'load'}> */}
+        <TitleBar 
+          oldC={oldColor}
+          newC={newColor}
+          pose={animateToggle ? 'new' : 'old'} 
+          className={classes.topBar}>
+          {/* <PoseGroup> */}
+            <TitleText key={uuid()}
+              pose={animateToggle ? 'enter' : 'exit'}>
+              <Typography variant="h3" className={classes.title}>
+                {titleState.title}
+              </Typography>
+            </TitleText>
+          {/* </PoseGroup> */}
+          {auth ? (
           <div className={classes.profileControl}>
             <IconButton
               aria-label="Profile Options"
@@ -110,12 +153,13 @@ const Title = (props) => {
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </div>
-        ) : (
+          ) : (
           <div className={classes.profileControl}>
             <AuthDialog getProfile={getProfile} />
           </div>
-        )}
-      </Toolbar>
+          )}
+        {/* </Toolbar> */}
+      </TitleBar>
     </AppBar>
   );
 };

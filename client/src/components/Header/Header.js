@@ -5,7 +5,7 @@ import Title from './Title';
 
 const Header = (props) => {
   const { userInfo: { loggedIn, user: { username } }, logOut, getProfile } = props;
-  const defaultTitle = {title: '404', color: 'orange, beige'}
+  const defaultTitle = {title: '404', color: '#ffa500, 30%, #f5f5dc'}
   // Hooks
   const [ auth, setAuth ] = useState(false);
   const [ prevPath, setPrevPath ] = useState('');
@@ -80,6 +80,7 @@ const Header = (props) => {
         auth={auth}
         titleState={titleState}
         prevPath={prevPath}
+        navLinks={navLinks}
       />
       <Nav paths={paths} setPrevPath={setPrevPath} />
     </>
