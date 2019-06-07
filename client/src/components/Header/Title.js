@@ -9,6 +9,23 @@ import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import Menu from "@material-ui/core/Menu";
 import AuthDialog from "../Auth/AuthDialog";
+import posed, { PoseGroup } from 'react-pose';
+import uuid from 'uuid'
+
+// Define animations
+const TitleText = posed.div({
+  enter: { 
+    y: 0,
+    transition: {
+      y: { 
+        type: 'spring', 
+        // stiffness: 1000, 
+        // damping: 15 
+      },
+    default: { duration: 300 }
+  }},
+  exit: { y: -100 }
+})
 
 const Title = ({ username, logOut, getProfile, auth, titleState }) => {
   // Hooks
@@ -59,9 +76,11 @@ const Title = ({ username, logOut, getProfile, auth, titleState }) => {
   return (
     <AppBar position="static">
       <Toolbar className={classes.topBar}>
+        <PoseGroup><TitleText key={uuid()}>
         <Typography variant="h3" className={classes.title}>
           {titleState.title}
         </Typography>
+        </TitleText></PoseGroup>
         {auth ? (
           <div className={classes.profileControl}>
             <IconButton

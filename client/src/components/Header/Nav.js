@@ -8,12 +8,13 @@ import uuid from 'uuid';
 // Define Animations
 const NavItem = posed.div({
   enter: { 
-    y: 0, opacity: 1, 
     delay: ({index}) => index*200,
+    y: 0, opacity: 1,
     transition: {
-      duration: 800,
-      ease: 'backOut'
-    }
+      y: { 
+        type: 'tween', 
+      }
+    },
   },
   exit: { y: -15, opacity: 0},
 });
