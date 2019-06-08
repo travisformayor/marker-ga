@@ -77,7 +77,9 @@ Front end and back end file validation for:
   - const image = new Image() => creates an empty html img tag
   - set the src attribute for that tag => image.src = src
   
-### ![:skull:](https://gist.github.com/rxaviers/7360908) Skeletons
+### :skull: Skeletons
+
+:skull:
 
 The (typically) grey place holder before some content has loaded enough to start displaying. CSS animations like pulse or side wide are common, to give a sense something is happening in the background.
 
