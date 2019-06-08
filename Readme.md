@@ -79,8 +79,6 @@ Front end and back end file validation for:
   
 ### :skull: Skeletons
 
-:skull:
-
 The (typically) grey place holder before some content has loaded enough to start displaying. CSS animations like pulse or side wide are common, to give a sense something is happening in the background.
 
 Triggering the Skelly on/off can e as simple as some grey divs that display when a state is true, and hide when false. Successful response from the api call can trigger that state to toggle to false, which reveals the else clause: divs for the real content.
