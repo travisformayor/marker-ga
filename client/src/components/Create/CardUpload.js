@@ -12,13 +12,19 @@ const CardUpload = () => {
   const [ uploadPercentage, setUploadPercentage ] = useState(0);
 
   const onChange = e => {
-    console.log(e.target)
-    setFile(e.target.files[0]); // single file upload, so [0] since it can be an array of files
-    setFilename(e.target.files[0].name);
+    console.log('target: ', e.target.files)
+    if (e.target.files.length > 0) {
+      // [0] since it can be an array of files but we only want one
+      setFile(e.target.files[0]); 
+      setFilename(e.target.files[0].name);
+    } else {
+      // file selection was cancelled
+    }
   }
 
   const onSubmit = async e => {
     e.preventDefault();
+    setAlerts([]); // clear out any old alerts from previous upload attempts
     const formData = new FormData(); //js datatype
     formData.append('file', file); // sent as req.files.file in the backend
     
@@ -53,11 +59,11 @@ const CardUpload = () => {
         //   setAlerts({message: 'There was a problem with the server', status: 'error'});
         // } else 
         if (err.response.status === 413) {
-          setAlerts({
+          setAlerts([{
             message: 'The file size is too damn high!', 
             status: 'error',
             type: 'upload',
-          });
+          }]);
         } else { 
           // stuff like the 'no file uploaded' message from server
           setAlerts(err.response.data.alerts);
