@@ -1,3 +1,4 @@
 module.exports = {
-  auth: require('./auth'),
+  authCtrl: require('./authCtrl'),
+  createCtrl: require('./createCtrl'),
 }

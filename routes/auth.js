@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jwt-simple')
 const controllers = require('../controllers');
+const jwt = require('jwt-simple')
 
 // routes that don't require auth to see
-router.post('/login', controllers.auth.login);
-router.post('/signup', controllers.auth.signup);
+router.post('/login', controllers.authCtrl.login);
+router.post('/signup', controllers.authCtrl.signup);
 
 // jwt authentication middleware
 

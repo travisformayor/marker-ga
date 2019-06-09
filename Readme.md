@@ -108,3 +108,6 @@ note: switch from market to gallery in final readme challenges
 
 <https://www.npmjs.com/package/dotenv>
 for env's like s3 credentials and jwt secret key
+
+- shows username in profile avatar drop down
+- error message has themes you can toggle

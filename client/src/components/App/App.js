@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { withRouter } from "react-router";
 import Header from '../Header/Header';
 import Profile from '../Profile/Profile';
+import Create from '../Create/Create';
 import Error from '../Error/Error';
 import AxiosModel from '../../models/axios';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -59,6 +60,7 @@ const App = (props) => {
         ))}
         <Switch>
           <Route path="/profile" render={() => <Profile user={userInfo.user} /> } />
+          <Route path="/create" render={() => <Create user={userInfo.user} /> } />
         </Switch>
       </main>
     </>

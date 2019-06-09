@@ -5,6 +5,7 @@
   "author": "Travis <travisformayor@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
+    "aws-sdk": "^2.471.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "dotenv": "^8.0.0",
