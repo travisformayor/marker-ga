@@ -63,12 +63,14 @@ const Header = (props) => {
   useEffect(() => {
     // Auth state changed
     getNav()
+    // eslint-disable-next-line
   },[auth])
 
   useEffect(() => {
     // url path changed
     getTitle();
     getNav();
+    // eslint-disable-next-line
   },[props.location.pathname]);
 
   return (
