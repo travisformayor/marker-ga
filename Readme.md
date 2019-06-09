@@ -101,3 +101,10 @@ progressive loading - small thumbnail with blur while waiting on the large file 
 npm sharp - makes low res thumbnails
   - make a nice thumbnail for displaying
   - make a micro thumbnail for progressive loading
+
+## Other Stuff
+
+note: switch from market to gallery in final readme challenges
+
+<https://www.npmjs.com/package/dotenv>
+for env's like s3 credentials and jwt secret key

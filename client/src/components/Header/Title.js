@@ -129,6 +129,7 @@ const Title = (props) => {
               anchorEl={anchor}
             >
               <MenuItem disabled className={classes.username}>
+                Signed in as: <br />
                 {username}
               </MenuItem>
               <MenuItem onClick={handleClose} component={Link} to="/profile">

@@ -141,7 +141,7 @@ const Signup = ({ close }) => {
           variant="outlined"
         />
         {errors.filter(error => error.type === 'extra').map((error, index) => (
-          <Error message={error.message} key={'signup-error'+index} />
+          <Error message={error.message} status={'error'} key={'signup-error'+index} />
         ))}
         <NavButton 
           variant="contained" className={classes.button} type="submit" label="login">

@@ -130,14 +130,13 @@ const Login = ({ close }) => {
           }}
         />
         {errors.filter(error => error.type === 'extra').map((error, index) => (
-          <Error message={error.message} key={'login-error'+index} />
+          <Error message={error.message} status={'error'} key={'login-error'+index} />
         ))}
         <NavButton 
           variant="contained" className={classes.button} type="submit" label="login">
           Login
         </NavButton>
       </form>
-
     </>
   );
 }

@@ -55,7 +55,7 @@ const App = (props) => {
       <Header userInfo={userInfo} logOut={logOut} getProfile={getProfile} />
       <main>
         {errors.map((error, index) => (
-          <Error message={error.message} key={'root-error'+index} />
+          <Error message={error.message} status={'error'} key={'root-error'+index} />
         ))}
         <Switch>
           <Route path="/profile" render={() => <Profile user={userInfo.user} /> } />
