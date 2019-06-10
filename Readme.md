@@ -155,5 +155,3 @@ Protected Routes:
 Need to be logged in
 /create
 /profile
-
-
