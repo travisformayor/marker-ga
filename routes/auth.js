@@ -7,8 +7,7 @@ const jwt = require('jwt-simple')
 router.post('/login', controllers.authCtrl.login);
 router.post('/signup', controllers.authCtrl.signup);
 
-// jwt authentication middleware
-
+// JWT Authentication Middleware ================ //
 router.use( async (req, res, next) => {
   // console.log('checking auth...');
   const token = req.headers['authorization'];
@@ -25,6 +24,7 @@ router.use( async (req, res, next) => {
   }
 });
 
+// Routes that need auth to access
 router.get('/profile', controllers.authCtrl.getProfile);
 
 // router.get('/profile', controllers.auth.profile);
