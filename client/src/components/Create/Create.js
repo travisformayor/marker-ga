@@ -1,11 +1,19 @@
 import React from 'react';
 import CardUpload from './CardUpload';
+import Alert from '../Alert/Alert'
 
 const Create = (props) => {
+  const { user: {name, username}, loggedIn } = props.user;
   // If visitor is not logged in, show a message. Login/register required to create cards
   return (
-    <CardUpload />
-
+    <>
+      {!loggedIn ? (
+        <Alert message={'You need to be logged in to create'} status={'error'} />
+      ) : (
+        <CardUpload />
+        
+      )}
+    </>
   )
 };
 

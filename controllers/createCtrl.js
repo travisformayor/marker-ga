@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jwt-simple')
+const jwt = require('jwt-simple');
 const AWS = require('aws-sdk');
+const sharp = require('sharp');
 
 // Database
 const db = require('../models');
@@ -33,16 +34,20 @@ module.exports = {
       console.log('mime type is: ', file.mimetype);
       console.log('md5 hash of file: ', file.md5);
       // Rename file to its md5 hash, keeping its mimetype extension
-      const fileName = (file.mimetype === 'image/jpeg') ? `${file.md5}.jpg` : `${file.md5}.png`
+      const fileExt = (file.mimetype === 'image/jpeg') ? 'jpg' : 'png'
+      const fileName = `${file.md5}.${fileExt}`
       // Define the upload info. file.data is a stream of the file contents
 
       // ToDo: create micro thumbnail here, and upload it as well to s3
       // upload to s3 via multipart upload as a stretch goal. for now, just do it twice
       try {
         // await sharp
-
+        const imgPath = '../Public/test.jpg'
+        const microThumbnail = await sharp(file.data).resize(15, 20).toFile(imgPath, function(err) {
+          if(err){console.log(err)}
+        })
       } catch (err) {
-
+        console.log(err)
       }
       
       try {

@@ -59,8 +59,8 @@ const App = (props) => {
           <Alert message={alert.message} status={alert.status} key={'root-alert'+index} />
         ))}
         <Switch>
-          <Route path="/profile" render={() => <Profile user={userInfo.user} /> } />
-          <Route path="/create" render={() => <Create user={userInfo.user} /> } />
+          <Route path="/profile" render={() => <Profile user={userInfo} /> } />
+          <Route path="/create" render={() => <Create user={userInfo} /> } />
         </Switch>
       </main>
     </>

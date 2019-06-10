@@ -24,6 +24,7 @@ const CardUpload = () => {
     if (file) {
       uploadFile();
     }
+    // eslint-disable-next-line
   },[file])
 
 

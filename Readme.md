@@ -144,3 +144,8 @@ Progressive Loading
 
 First, you need a micro-thumbnail
 <https://www.npmjs.com/package/sharp>
+
+Protected Routes:
+Need to be logged in
+/create
+/profile
