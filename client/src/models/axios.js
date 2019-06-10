@@ -21,6 +21,13 @@ class AxiosModel {
       'authorization': token}});
     return request;
   }
+  // Get All Drafts for user
+  static getDrafts(token) {
+    const api_url = `${endpoint}/create/drafts`;
+    let request = axios.get(api_url, {headers: {
+      'authorization': token}});
+    return request;
+  }
   // Create
   static sendImage(data, setUploadPercentage, token) {
     const api_url = `${endpoint}/create/uploadimage`;

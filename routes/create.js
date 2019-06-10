@@ -22,6 +22,7 @@ router.use( async (req, res, next) => {
 
 // Routes that need auth to access
 router.post('/uploadimage', controllers.createCtrl.uploadImage); // Upload an image
+router.post('/drafts', controllers.createCtrl.getDrafts); // Get all drafts for user
 // router.post('/savecard', controllers.createCtrl.saveCard); // Save the card
 // router.post('/delcard', controllers.createCtrl.deleteCard); // Delete a draft card
 // router.post('/cards', controllers.createCtrl.getCards); // Get info on all the cards

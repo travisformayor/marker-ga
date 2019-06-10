@@ -23,6 +23,7 @@ const App = (props) => {
       try {
         const response = await AxiosModel.getProfile(localStorage.token);
         // console.log('Token check went through', response.data);
+        // ToDo: add a check here to make sure foundUser is present
         const { foundUser } = response.data
         setUserInfo({
           loggedIn: true,

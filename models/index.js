@@ -8,4 +8,6 @@ mongoose.connect(DB_URL, {useNewUrlParser: true, useFindAndModify: false, useCre
 
 module.exports = {
   User: require('./user'),
+  Card: require('./card'),
+  Draft: require('./draft'),
 };

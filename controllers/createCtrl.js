@@ -114,6 +114,18 @@ module.exports = {
       });
     }
   },
+  getDrafts: async (req, res) => {
+    // ${endpoint}/create/drafts
+      try {
+        const data = await db.Draft.find({user_id: req.userId})
+        // return res.status(200).json({success: 'success', foundUser})
+        return res.status(200).json({success: 'success', foundDraft});
+      } catch (err) {
+        return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
+      }
+    },
+
+  },
   
   //saveCard:
   // Save a card (new card or updating an existing card)
