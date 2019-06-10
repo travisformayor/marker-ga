@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CardUpload = ({ draftid, refresh, info }) => {
+const CardUpload = ({ refresh, info }) => {
   const classes = useStyles();
   const [ file, setFile ] = useState(null);
   const [ filename, setFilename ] = useState('Choose File');
@@ -51,9 +51,10 @@ const CardUpload = ({ draftid, refresh, info }) => {
   const [ cardDraft, setCardDraft ] = useState({
     title: info.title,
     desc: info.desc,
-    // email: '',
-    // password: '',
-    // password2: '',
+    microName: info.microName,
+    microUrl: info.microUrl,
+    fileName: info.fileName,
+    fileUrl: info.fileUrl,
   });
 
   const handleChange = event => {
@@ -66,7 +67,7 @@ const CardUpload = ({ draftid, refresh, info }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const response = await AxiosModel.updateDraft(cardDraft, draftid, localStorage.token);
+      const response = await AxiosModel.updateDraft(cardDraft, info._id, localStorage.token);
       console.log('Response: ', response);
       refresh();
       // setAlerts([]); // clear old alerts
@@ -79,7 +80,6 @@ const CardUpload = ({ draftid, refresh, info }) => {
       // setAlerts(err.response.data.alerts)
     }
   }
-
 
   useEffect(() => {
     // console.log('upload percentage: ', uploadPercentage)
@@ -96,6 +96,22 @@ const CardUpload = ({ draftid, refresh, info }) => {
     // eslint-disable-next-line
   },[file])
 
+  useEffect(() => {
+    if (uploadedFiles.length > 0) {
+      setCardDraft({
+        ...cardDraft, // spread operator. copy the previous newUser first
+        microName: uploadedFiles[1].fileName || '',
+        microUrl: uploadedFiles[1].filePath || '',
+        fileName: uploadedFiles[0].fileName || '',
+        fileUrl: uploadedFiles[0].filePath || '',
+      })
+    }
+    // console.log('file change detected')
+    // if (file) {
+    //   uploadFile();
+    // }
+    // eslint-disable-next-line
+  },[uploadedFiles])
 
   const selectFile = e => {
     // File selected
@@ -133,7 +149,7 @@ const CardUpload = ({ draftid, refresh, info }) => {
         // console.log('response: ', alerts);
         // ToDo: these two setStates look redundant
         if (alerts[0].fileName) {
-          setUploadedFiles(alerts)
+          setUploadedFiles(alerts) // this sets all the res data
         }
         setAlerts(alerts)
       } catch(err) {
@@ -196,12 +212,19 @@ const CardUpload = ({ draftid, refresh, info }) => {
       <p>{uploading && processing ? `Processing ${filename}...` : null }</p>
 
       {/* Show Image when done */}
-      {uploadedFiles.filter(file => file.type === 'upload').map((file, index) => (
+      {/* {console.log(uploadedFiles)} */}
+      {/* {uploadedFiles.filter(file => file.type === 'upload').map((file, index) => (
         <div key={'image'+index}>
           <h3>{file.fileName}</h3>
           <img style={{width: '100%'}} src={file.filePath} alt={'Uploaded: ' + file.fileName} />
         </div>
-       ))}
+       ))} */}
+      {cardDraft.fileName ? (
+        <div>
+          <h3>{cardDraft.fileName}</h3>
+          <img style={{width: '100%'}} src={cardDraft.fileUrl} alt={'Uploaded: ' + cardDraft.fileName} />
+        </div>
+       ) : ( null )}
     </>
   )
 }

@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Progress = ({ percentage,  uploading, processing, selectFile }) => {
+  // console.log('percentage: ', percentage)
   const classes = useStyles();
 
   return (

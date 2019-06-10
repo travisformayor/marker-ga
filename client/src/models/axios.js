@@ -68,6 +68,7 @@ class AxiosModel {
       },
       onUploadProgress: progressEvent => {
         // will get .loaded and .total
+        // console.log('ok')
         setUploadPercentage(
           parseInt(
             Math.round((progressEvent.loaded * 100) / progressEvent.total)

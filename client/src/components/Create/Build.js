@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
   },
   draftBody: {
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     border: '3px solid #35baf6',
     color: 'black',
     padding: '20px',
@@ -101,7 +101,7 @@ const Build = (props) => {
             <span>{title ? title : 'Untitled'} - {moment(createdDate).format('MMMM Do YYYY, h:mm:ss a')}</span>
           </div>
           <div className={classes.draftBody}>
-            <CardUpload draftid={_id} refresh={refresh} info={info} />
+            <CardUpload refresh={refresh} info={info} />
           </div>
         </div>
       )}
