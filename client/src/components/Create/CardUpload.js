@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import AxiosModel from '../../models/axios';
 import Alert from '../Alert/Alert';
 import Progress from './Progress';
-import axios from 'axios';
 
 const CardUpload = () => {
   const [ file, setFile ] = useState(null);
@@ -49,49 +49,39 @@ const CardUpload = () => {
     const formData = new FormData(); //js datatype
     formData.append('file', file); // sent as req.files.file in the backend
     
-    try {
-      setUploading(true);
-      const res = await axios.post('/api/v1/create/uploadimage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: progressEvent => {
-          // will get .loaded and .total
-          setUploadPercentage(
-            parseInt(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            )
-          );            
-        }
-      });
-      setUploading(false);
-      // Response in, stop the 'processing' progress bar action
-      console.log('response has returned')
-      setProcessing(false)
-      // clear the percentage 10 seconds after done
-      setTimeout(() => setUploadPercentage(0), 10000);
-      // save response object into state
-      const { fileName, filePath, alerts } = res.data; // from the backend
-      console.log('response: ', res.data);
-      setUploadedFile({fileName, filePath});
-      // console.log('File uploaded: ', uploadedFile);
-      setAlerts(alerts)
-      // setAlerts({msg: msg, status: 'info'}); // 'File Uploaded'
+    if (localStorage.token) {
+      try {
+        setUploading(true);
+        const res = await AxiosModel.sendImage(formData, setUploadPercentage, localStorage.token)
+        setUploading(false);
+        // Response in, stop the 'processing' progress bar action
+        console.log('response has returned')
+        setProcessing(false)
+        // clear the percentage 10 seconds after done
+        setTimeout(() => setUploadPercentage(0), 10000);
+        // save response object into state
+        const { fileName, filePath, alerts } = res.data; // from the backend
+        console.log('response: ', res.data);
+        setUploadedFile({fileName, filePath});
+        // console.log('File uploaded: ', uploadedFile);
+        setAlerts(alerts)
+        // setAlerts({msg: msg, status: 'info'}); // 'File Uploaded'
 
-    } catch(err) {
-      setUploading(false);
-      console.error(err);
-      setUploadPercentage(0);
-      setProcessing(false)
-      if (err.response.status === 413) {
-        setAlerts([{
-          message: 'The file size is too damn high!', 
-          status: 'error',
-          type: 'upload',
-        }]);
-      } else { 
-        // stuff like the 'no file uploaded' message from server
-        setAlerts(err.response.data.alerts);
+      } catch(err) {
+        setUploading(false);
+        console.error(err);
+        setUploadPercentage(0);
+        setProcessing(false)
+        if (err.response.status === 413) {
+          setAlerts([{
+            message: 'The file size is too damn high!', 
+            status: 'error',
+            type: 'upload',
+          }]);
+        } else { 
+          // stuff like the 'no file uploaded' message from server
+          setAlerts(err.response.data.alerts);
+        }
       }
     }
   }
