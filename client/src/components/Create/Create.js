@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Build from './Build';
 import Alert from '../Alert/Alert';
@@ -16,16 +16,21 @@ const Create = (props) => {
   const classes = useStyles();
   const { loggedIn } = props.user; // user: {name, username},
   const [ drafts, setDrafts ] = useState([]);
+
+  useEffect(() => {
+    getDrafts();
+  },[])
   
   const getDrafts = async () => {
-    console.log('token in localstore: ', localStorage.token)
+    // console.log('token in localstore: ', localStorage.token)
     if (localStorage.token) {
       try {
-        console.log('Looking up drafts for user...');
+        // console.log('Looking up drafts for user...');
         const response = await AxiosModel.getDrafts(localStorage.token);
         // ToDo: add a check here to make sure foundDrafts is present
         const { foundDrafts } = response.data
-        console.log('drafts found? ', foundDrafts)
+        // console.log('drafts found: ', foundDrafts)
+        setDrafts(foundDrafts);
         // setDrafts(foundDrafts);
       } catch(err) {
         console.log('err.response', err.response);
@@ -68,7 +73,9 @@ const Create = (props) => {
             <Icon>edit_icon</Icon>
             New Draft
           </Button>
-          <Build />
+          {drafts.reverse().map((draft, index) => (
+            <Build info={draft} key={'drafts'+index} />
+          ))}
         </>
       )}
     </>
