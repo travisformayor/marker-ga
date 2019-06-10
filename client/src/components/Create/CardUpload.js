@@ -1,9 +1,46 @@
 import React, { useState, useEffect } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import AxiosModel from '../../models/axios';
 import Alert from '../Alert/Alert';
 import Progress from './Progress';
 
-const CardUpload = () => {
+// Nav button css
+const NavButton = withStyles({
+  root: {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    borderRadius: 5,
+    border: 0,
+    color: 'white',
+    height: 50,
+    padding: '0px 40px',
+    // marginTop: '30px',
+    boxShadow: '0 3px 5px 5px rgba(255, 105, 135, .3)',
+  },
+  label: {
+    textTransform: 'capitalize',
+    fontSize: '1.5em',
+  },
+})(Button);
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+}));
+
+const CardUpload = ({ draftid }) => {
+  const classes = useStyles();
   const [ file, setFile ] = useState(null);
   const [ filename, setFilename ] = useState('Choose File');
   const [ uploadedFiles, setUploadedFiles ] = useState([]);
@@ -11,6 +48,37 @@ const CardUpload = () => {
   const [ uploadPercentage, setUploadPercentage ] = useState(0);
   const [ processing, setProcessing ] = useState(false);
   const [ uploading, setUploading ] = useState(false);
+  const [ cardDraft, setCardDraft ] = useState({
+    title: '',
+    desc: '',
+    // email: '',
+    // password: '',
+    // password2: '',
+  });
+
+  const handleChange = event => {
+    setCardDraft({
+      ...cardDraft, // spread operator. copy the previous newUser first
+      [event.target.name]: event.target.value, // Add any new changes
+    })
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try {
+      const response = await AxiosModel.updateDraft(cardDraft, draftid, localStorage.token);
+      console.log('Response: ', response);
+      // setAlerts([]); // clear old alerts
+      // localStorage.token = response.data.token;
+      // success outcome: close the modal
+      // close();
+      // history.push(`/profile`)
+    } catch(err) {
+      console.log(err);
+      // setAlerts(err.response.data.alerts)
+    }
+  }
+
 
   useEffect(() => {
     // console.log('upload percentage: ', uploadPercentage)
@@ -90,6 +158,36 @@ const CardUpload = () => {
       {alerts.filter(alert => alert.type === 'upload').map((alert, index) => (
         <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
       ))}
+
+      <form onSubmit={handleSubmit} className={classes.container} noValidate autoComplete="off">
+        <TextField
+          id="outlined-draft-title"
+          className={classes.textField}
+          label="Title"
+          onChange={handleChange}
+          value={cardDraft.title}
+          name="title"
+          type="text"
+          margin="normal"
+          variant="outlined"
+        />
+        <TextField
+          id="outlined-draft-desc"
+          className={classes.textField}
+          label="Description"
+          onChange={handleChange}
+          value={cardDraft.desc}
+          name="desc"
+          type="text"
+          margin="normal"
+          variant="outlined"
+        />
+        <NavButton 
+          variant="contained" className={classes.button} type="submit" label="login">
+          Save Draft
+        </NavButton>
+      </form>
+
       <Progress percentage={uploadPercentage} uploading={uploading} processing={processing} selectFile={selectFile} />
       
       <p>{!uploading && !processing ? filename : null }</p>

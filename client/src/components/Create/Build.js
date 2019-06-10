@@ -100,7 +100,7 @@ const Build = (props) => {
             <span>{title ? title : 'Untitled'} - {moment(createdDate).format('MMMM Do YYYY, h:mm:ss a')}</span>
           </div>
           <div className={classes.draftBody}>
-            <CardUpload />
+            <CardUpload draftid={_id}/>
           </div>
         </div>
       )}

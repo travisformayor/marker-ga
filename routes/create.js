@@ -12,6 +12,7 @@ const jwt = require('jwt-simple')
 // })
 
 router.get('/deletedraft/:id', controllers.createCtrl.deleteDraft);
+router.post('/updatedraft/:id', controllers.createCtrl.updateDraft);
 
 // JWT Authentication Middleware ================ //
 router.use( async (req, res, next) => {

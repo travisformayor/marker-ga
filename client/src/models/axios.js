@@ -47,6 +47,16 @@ class AxiosModel {
     let request = axios.get(api_url);
     return request;
   }
+  static updateDraft(data, id, token) {
+    console.log('data: ', data)
+    console.log('id: ', id)
+    console.log('token: ', token)
+    const api_url = `${endpoint}/create/updatedraft/${id}`;
+    // let request = axios.get(api_url, data, {headers: {
+    //   'authorization': token}});
+    let request = axios.post(api_url, data);
+    return request;
+  }
   // send an image to a draft record
   static sendImage(data, setUploadPercentage, token) {
     // console.log('Token in axios: ', token)
