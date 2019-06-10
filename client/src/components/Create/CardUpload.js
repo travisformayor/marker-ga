@@ -180,8 +180,8 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
         console.error(err.response.data);
         setUploadPercentage(0);
         setProcessing(false)
-        // if (err.response.status === 413) {
-        if (err.response.data === "File to large") {
+        if (err.response.status === 413) {
+        // if (err.response.data === "File to large") {
           setAlerts([{
             message: 'The file size is too damn high!', 
             status: 'error',
