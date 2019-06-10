@@ -55,8 +55,8 @@ const Gallery = () => {
   return (
     <div className={classes.galleryHolder} >
       {cards.map((card, index) => (
-        <div className={classes.galleryItem} >
-          <GalleryItem card={card} key={'gallery-item'+index} />
+        <div className={classes.galleryItem} key={'gallery-item'+index} >
+          <GalleryItem card={card} />
         </div>
       ))}
     </div>
