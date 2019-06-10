@@ -20,7 +20,7 @@ const Create = (props) => {
       } catch(err) {
         console.log('err.response', err.response);
         // setAlerts(err.response.data.alerts);
-        setAlerts(err.response.data.alerts);
+        // setAlerts(err.response.data.alerts);
       }
     }
   }

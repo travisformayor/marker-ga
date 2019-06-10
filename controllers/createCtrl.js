@@ -115,11 +115,20 @@ module.exports = {
     }
   },
   getDrafts: async (req, res) => {
-    // ${endpoint}/create/drafts
       try {
-        const data = await db.Draft.find({user_id: req.userId})
-        // return res.status(200).json({success: 'success', foundUser})
-        return res.status(200).json({success: 'success', foundDraft});
+        const foundDrafts = await db.Draft.find({user_id: req.userId})
+        return res.status(200).json({success: 'success', foundDrafts});
+      } catch (err) {
+        return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
+      }
+    },
+    newDraft: async (req, res) => {
+      // Create blank draft record  
+      try {
+        const newDraft = {};
+        const addedDraft = await db.Draft.create(newDraft);
+        console.log('New draft created: ', addedDraft)
+        return res.status(200) //.json({success: 'success', addedDraft});
       } catch (err) {
         return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
       }
