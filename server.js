@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const path = require('path');
@@ -11,6 +12,16 @@ const PORT = process.env.PORT || 5000;
 require('dotenv').config()
 
 // cors
+app.options('*', cors())
+const corsOptions = {
+  origin: ['http://localhost:5000', 'http://localhost:3000', 'https://marker-123.herokuapp.com'],
+  methods: ['GET', 'POST', 'DELETE'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
+  credentials: true, // This allows the session cookie to be sent back and forth
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions));
+// // Enable CORS "Pre-Flight" for all routes
 
 // Express File Upload
 app.use(fileUpload({
@@ -22,7 +33,7 @@ app.use(fileUpload({
 }));
 
 // BodyParser
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // React Static Build Files =========== //

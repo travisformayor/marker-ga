@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CardUpload from './CardUpload';
+import Button from '@material-ui/core/Button';
 const moment = require('moment');
 
 const useStyles = makeStyles(theme => ({
@@ -64,26 +65,36 @@ const Build = (props) => {
   const classes = useStyles();
   const { info: { _id, createdDate, title }, deleteDraft } = props;
   const [ mini, setMini ] = useState(true);
-  console.log('build: ', props)
+  // console.log('build: ', props)
 
   const toggleMini = () => {
     console.log('toggle!');
     setMini(!mini);
   }
 
+  const delDraft = () => {
+    deleteDraft({dataid: _id})
+  }
+
   return (
     <>
       {mini ? (
-        <div className={classes.draftMini} onClick={toggleMini} >
-          <IconButton className={classes.delete} aria-label="Delete" onClick={() => deleteDraft(_id)}>
+        <div className={classes.draftMini} >
+          <Button variant="contained" className={classes.button} onClick={toggleMini}>
+            Expand
+          </Button>
+          <IconButton className={classes.delete} aria-label="Delete" onClick={delDraft}>
             <DeleteIcon />
           </IconButton>
           <span>{title ? title : 'Untitled'} - {moment(createdDate).format('MMMM Do YYYY, h:mm:ss a')}</span>
         </div>
         ) : (
-        <div className={classes.draft} onClick={toggleMini} >
-          <div className={classes.draftTitle}>
-            <IconButton className={classes.delete} aria-label="Delete">
+        <div className={classes.draft} >
+          <div className={classes.draftTitle} >
+            <Button variant="contained" className={classes.button} onClick={toggleMini}>
+              Collapse
+            </Button>
+            <IconButton className={classes.delete} aria-label="Delete" onClick={delDraft}>
               <DeleteIcon />
             </IconButton>
             <span>{title ? title : 'Untitled'} - {moment(createdDate).format('MMMM Do YYYY, h:mm:ss a')}</span>

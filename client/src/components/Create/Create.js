@@ -72,12 +72,13 @@ const Create = (props) => {
   }
 
   const deleteDraft = async (draftId) => {
-    console.log('delete draft id: ', draftId)
+    // console.log('delete draft id: ', draftId)
     // console.log('token in localstore: ', localStorage.token)
     if (localStorage.token) {
       try {
         // console.log('Creating new blank draft for user...');
         //const response = 
+        console.log('data to send:', draftId)
         await AxiosModel.deleteDraft(draftId, localStorage.token);
         // re-run get new list of drafts
         getDrafts();

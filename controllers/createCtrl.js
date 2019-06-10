@@ -119,7 +119,7 @@ module.exports = {
     console.log('user info: ', req.userId)
     try {
       const foundDrafts = await db.Draft.find({user_id: req.userId})
-      console.log('found drafts: ', foundDrafts)
+      // console.log('found drafts: ', foundDrafts)
       return res.status(200).json({success: 'success', foundDrafts});
     } catch (err) {
       return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
@@ -140,12 +140,13 @@ module.exports = {
     }
   },
   deleteDraft: async (req, res) => {
-    const { draftId } = req.body;
+    // const { draftId } = req.body;
+    console.log('body: ', req.params);
     // .findByIdAndDelete()
     try {
       // console.log('deleting a draft...')
       // ToDo: check if user is the owner before letting them delete
-      const removedDraft = await db.Draft.findByIdAndDelete(req.draftId);
+      const removedDraft = await db.Draft.findByIdAndDelete(req.params.id);
       console.log('Draft removed: ', removedDraft)
       return res.status(200).json({success: 'success'});
     } catch (err) {

@@ -11,6 +11,7 @@ class AxiosModel {
     return request;
   }
   static login(data) {
+    console.log('data: ', data)
     const api_url = `${endpoint}/auth/login`;
     let request = axios.post(api_url, data);
     return request;
@@ -38,9 +39,12 @@ class AxiosModel {
     return request;
   }
   static deleteDraft(data, token) {
-    const api_url = `${endpoint}/auth/draft`;
-    let request = axios.delete(api_url, data, {headers: {
-      'authorization': token}});
+    console.log('data: ', data)
+    console.log('token: ', token)
+    const api_url = `${endpoint}/create/deletedraft/${data.dataid}`;
+    // let request = axios.get(api_url, data, {headers: {
+    //   'authorization': token}});
+    let request = axios.get(api_url);
     return request;
   }
   // send an image to a draft record
