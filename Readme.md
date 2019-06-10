@@ -124,6 +124,9 @@ While Processing
 
 What does the (+) button do
 
+- Visual effect of progress around button. Documentation wrong?
+  - <https://material-ui.com/components/progress/#interactive-integration>
+  - `zIndex: 1,` vs `zIndex: -1,`
 - Select a file. Images only by default
 - Upload the file
 - Disable / Grey out button during upload
@@ -144,8 +147,13 @@ Progressive Loading
 
 First, you need a micro-thumbnail
 <https://www.npmjs.com/package/sharp>
+<https://www.npmjs.com/package/express-fileupload>
+<https://www.npmjs.com/package/aws-sdk>
+<https://www.npmjs.com/package/md5>
 
 Protected Routes:
 Need to be logged in
 /create
 /profile
+
+

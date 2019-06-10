@@ -3,7 +3,7 @@ import CardUpload from './CardUpload';
 import Alert from '../Alert/Alert'
 
 const Create = (props) => {
-  const { user: {name, username}, loggedIn } = props.user;
+  const { loggedIn } = props.user; // user: {name, username},
   // If visitor is not logged in, show a message. Login/register required to create cards
   return (
     <>

@@ -6,7 +6,7 @@ import Progress from './Progress';
 const CardUpload = () => {
   const [ file, setFile ] = useState(null);
   const [ filename, setFilename ] = useState('Choose File');
-  const [ uploadedFile, setUploadedFile ] = useState({});
+  const [ uploadedFiles, setUploadedFiles ] = useState([]);
   const [ alerts, setAlerts ] = useState([]);
   const [ uploadPercentage, setUploadPercentage ] = useState(0);
   const [ processing, setProcessing ] = useState(false);
@@ -30,9 +30,9 @@ const CardUpload = () => {
 
   const selectFile = e => {
     // File selected
-    console.log('target: ', e.target.files)
+    // console.log('target: ', e.target.files)
     if (e.target.files.length > 0) {
-      console.log('setting file...')
+      // console.log('setting file...')
       // [0] since it can be an array of files but we only want one
       setFile(e.target.files[0]); 
       setFilename(e.target.files[0].name);
@@ -55,18 +55,18 @@ const CardUpload = () => {
         const res = await AxiosModel.sendImage(formData, setUploadPercentage, localStorage.token)
         setUploading(false);
         // Response in, stop the 'processing' progress bar action
-        console.log('response has returned')
+        // console.log('response has returned')
         setProcessing(false)
         // clear the percentage 10 seconds after done
         setTimeout(() => setUploadPercentage(0), 10000);
         // save response object into state
-        const { fileName, filePath, alerts } = res.data; // from the backend
-        console.log('response: ', res.data);
-        setUploadedFile({fileName, filePath});
-        // console.log('File uploaded: ', uploadedFile);
+        const { alerts } = res.data; // from the backend
+        // console.log('response: ', alerts);
+        // ToDo: these two setStates look redundant
+        if (alerts[0].fileName) {
+          setUploadedFiles(alerts)
+        }
         setAlerts(alerts)
-        // setAlerts({msg: msg, status: 'info'}); // 'File Uploaded'
-
       } catch(err) {
         setUploading(false);
         console.error(err);
@@ -87,7 +87,6 @@ const CardUpload = () => {
   }
   return (
     <>
-      {/* {console.log('alerts: ', alerts)} */}
       {alerts.filter(alert => alert.type === 'upload').map((alert, index) => (
         <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
       ))}
@@ -98,12 +97,12 @@ const CardUpload = () => {
       <p>{uploading && processing ? `Processing ${filename}...` : null }</p>
 
       {/* Show Image when done */}
-      {(Object.keys(uploadedFile).length > 0) ? (
-        <div>
-          <h3>{uploadedFile.fileName}</h3>
-          <img style={{width: '100%'}} src={uploadedFile.filePath} alt={'Uploaded: ' + uploadedFile.fileName} />
+      {uploadedFiles.filter(file => file.type === 'upload').map((file, index) => (
+        <div key={'image'+index}>
+          <h3>{file.fileName}</h3>
+          <img style={{width: '100%'}} src={file.filePath} alt={'Uploaded: ' + file.fileName} />
         </div>
-       ) : null }
+       ))}
     </>
   )
 }
