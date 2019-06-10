@@ -1,34 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Alert from '../Alert/Alert';
 import Progress from './Progress';
 import axios from 'axios';
 
-
 const CardUpload = () => {
-  const [ file, setFile ] = useState('');
+  const [ file, setFile ] = useState(null);
   const [ filename, setFilename ] = useState('Choose File');
   const [ uploadedFile, setUploadedFile ] = useState({});
   const [ alerts, setAlerts ] = useState([]);
   const [ uploadPercentage, setUploadPercentage ] = useState(0);
+  const [ processing, setProcessing ] = useState(false);
+  const [ uploading, setUploading ] = useState(false);
 
-  const onChange = e => {
+  useEffect(() => {
+    // console.log('upload percentage: ', uploadPercentage)
+    if (uploadPercentage === 100) {
+      setProcessing(true);
+    }
+  }, [uploadPercentage])
+
+  useEffect(() => {
+    // console.log('file change detected')
+    if (file) {
+      uploadFile();
+    }
+  },[file])
+
+
+  const selectFile = e => {
+    // File selected
     console.log('target: ', e.target.files)
     if (e.target.files.length > 0) {
+      console.log('setting file...')
       // [0] since it can be an array of files but we only want one
       setFile(e.target.files[0]); 
       setFilename(e.target.files[0].name);
+
+      // uploadFile();
     } else {
       // file selection was cancelled
     }
   }
 
-  const onSubmit = async e => {
-    e.preventDefault();
+  const uploadFile = async e => {
+    // console.log('submitting...')
     setAlerts([]); // clear out any old alerts from previous upload attempts
     const formData = new FormData(); //js datatype
     formData.append('file', file); // sent as req.files.file in the backend
     
     try {
+      setUploading(true);
       const res = await axios.post('/api/v1/create/uploadimage', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -39,10 +60,14 @@ const CardUpload = () => {
             parseInt(
               Math.round((progressEvent.loaded * 100) / progressEvent.total)
             )
-          );
-          // clear the percentage 10 seconds after done
+          );            
         }
       });
+      setUploading(false);
+      // Response in, stop the 'processing' progress bar action
+      console.log('response has returned')
+      setProcessing(false)
+      // clear the percentage 10 seconds after done
       setTimeout(() => setUploadPercentage(0), 10000);
       // save response object into state
       const { fileName, filePath, alerts } = res.data; // from the backend
@@ -53,43 +78,41 @@ const CardUpload = () => {
       // setAlerts({msg: msg, status: 'info'}); // 'File Uploaded'
 
     } catch(err) {
-        console.error(err);
-        setUploadPercentage(0);
-        // if (err.response.status === 500) {
-        //   setAlerts({message: 'There was a problem with the server', status: 'error'});
-        // } else 
-        if (err.response.status === 413) {
-          setAlerts([{
-            message: 'The file size is too damn high!', 
-            status: 'error',
-            type: 'upload',
-          }]);
-        } else { 
-          // stuff like the 'no file uploaded' message from server
-          setAlerts(err.response.data.alerts);
-        }
+      setUploading(false);
+      console.error(err);
+      setUploadPercentage(0);
+      setProcessing(false)
+      // if (err.response.status === 500) {
+      //   setAlerts({message: 'There was a problem with the server', status: 'error'});
+      // } else 
+      if (err.response.status === 413) {
+        setAlerts([{
+          message: 'The file size is too damn high!', 
+          status: 'error',
+          type: 'upload',
+        }]);
+      } else { 
+        // stuff like the 'no file uploaded' message from server
+        setAlerts(err.response.data.alerts);
+      }
     }
   }
   return (
     <>
-      {console.log('alerts: ', alerts)}
+      {/* {console.log('alerts: ', alerts)} */}
       {alerts.filter(alert => alert.type === 'upload').map((alert, index) => (
         <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
       ))}
-      <form onSubmit={onSubmit}>
-        <div className="custom-file mb-4">
-          <input type="file" className="custom-file-input" id="customFile" onChange={onChange} />
-          <label className="custom-file-label" htmlFor="customFile">
-            {filename}
-          </label>
-        </div>
-        <Progress percentage={uploadPercentage} />
-        <input type="submit" value="Upload" className="btn btn-primary btn-block mt-4" />
-      </form>
-      {/* {console.log('uploaded file %: ', uploadPercentage)} */}
+      <Progress percentage={uploadPercentage} uploading={uploading} processing={processing} selectFile={selectFile} />
+      
+      <p>{!uploading && !processing ? filename : null }</p>
+      <p>{uploading && !processing ? `Uploading ${filename}...` : null}</p>
+      <p>{uploading && processing ? `Processing ${filename}...` : null }</p>
+
+      {/* Show Image when done */}
       {(Object.keys(uploadedFile).length > 0) ? (
-        <div className="row mt-5">
-          <h3 className="text-center">{uploadedFile.fileName}</h3>
+        <div>
+          <h3>{uploadedFile.fileName}</h3>
           <img style={{width: '100%'}} src={uploadedFile.filePath} alt={'Uploaded: ' + uploadedFile.fileName} />
         </div>
        ) : null }

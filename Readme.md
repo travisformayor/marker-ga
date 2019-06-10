@@ -111,3 +111,35 @@ for env's like s3 credentials and jwt secret key
 
 - shows username in profile avatar drop down
 - alert message has themes you can toggle
+
+While Processing
+
+```zsh
+[0] mime type is:  image/jpeg
+[0] md5 hash of file:  4cc0fd8432495fe306f07654f42571a8
+[0] The returned ETag:  4cc0fd8432495fe306f07654f42571a8
+[0] The files md5 hash:  4cc0fd8432495fe306f07654f42571a8
+[0] Do they equal?  true
+```
+
+What does the (+) button do
+
+- Select a file. Images only by default
+- Upload the file
+- Disable / Grey out button during upload
+- Text switches from base to uploading to processing to done
+- Displays upload progress from axios
+- Displays backend processing
+  - Abort on file above max filesize
+  - Validate file type (jpg or png)
+  - Rename file to it's md5 hash and filetype
+  - Upload to AWS S3
+  - Verify the files hash matches the one returned from S3
+- Display any error or info/success messages
+- Display the image (the S3 url)
+- Progress indicator disappears after 10 seconds
+- To Do: Progressive load image
+
+Progressive Loading
+
+First, you need a micro-thumbnail
