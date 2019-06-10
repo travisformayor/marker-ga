@@ -133,10 +133,12 @@ const CardUpload = ({ refresh, info }) => {
     setAlerts([]); // clear out any old alerts from previous upload attempts
     const formData = new FormData(); //js datatype
     formData.append('file', file); // sent as req.files.file in the backend
+    formData.append('id', info._id)
     
     if (localStorage.token) {
       try {
         setUploading(true);
+        // console.log('formdata: ', formData)
         const res = await AxiosModel.sendImage(formData, setUploadPercentage, localStorage.token)
         setUploading(false);
         // Response in, stop the 'processing' progress bar action

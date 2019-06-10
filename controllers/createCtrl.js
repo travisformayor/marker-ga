@@ -23,6 +23,8 @@ const genericError = "Something went wrong, please try again";
 module.exports = {
   // Upload image API
   uploadImage: async (req, res) => {
+    // console.log('req info: ', req.body.id)
+    // console.log('user info in upload: ', req.userId)
     // 'app.use(fileUpload...' middleware in server.js aborts on files to large before getting here
     if (!req.files) {
       return res.status(400).json({
@@ -65,6 +67,25 @@ module.exports = {
                 filePath,
               }],
             };
+            // save file names to the db here
+            try {
+              // the draft's id, not the users
+              if (fileName.includes('_micro')) {
+                const updatedDraft = await db.Draft.findByIdAndUpdate(req.body.id, {
+                  microName: fileName,
+                  microUrl: filePath,
+                })
+              } else {
+                const updatedDraft = await db.Draft.findByIdAndUpdate(req.body.id, {
+                  fileName, 
+                  fileUrl: filePath,
+                })
+              }
+              // const removedDraft = await db.Draft.findByIdAndDelete(req.params.id);
+              // console.log('Draft updated: ', updatedDraft)
+            } catch (err) {
+              console.log(err);
+            }
             return success;
           } else {
             // The hash returned by AWS does not match the file we received
