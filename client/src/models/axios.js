@@ -21,6 +21,15 @@ class AxiosModel {
       'authorization': token}});
     return request;
   }
+  // Create
+  // make a new blank draft
+  static newDraft(token) {
+    // console.log('Token in axios: ', token)
+    const api_url = `${endpoint}/create/draft`;
+    let request = axios.post(api_url, 'test', {headers: {
+        'authorization': token}});
+    return request;
+  }
   // Get All Drafts for user
   static getDrafts(token) {
     const api_url = `${endpoint}/create/drafts`;
@@ -28,8 +37,9 @@ class AxiosModel {
       'authorization': token}});
     return request;
   }
-  // Create
+  // send an image to a draft record
   static sendImage(data, setUploadPercentage, token) {
+    // console.log('Token in axios: ', token)
     const api_url = `${endpoint}/create/uploadimage`;
     let request = axios.post(api_url, data, {
       headers: {

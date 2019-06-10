@@ -5,7 +5,8 @@ const jwt = require('jwt-simple')
 
 // JWT Authentication Middleware ================ //
 router.use( async (req, res, next) => {
-  // console.log('checking auth...');
+  // console.log('checking token in create...');
+  // console.log('header info: ', req.headers)
   const token = req.headers['authorization'];
   // console.log('Token received: ', token);
   if (typeof(token) !== 'undefined') {
@@ -23,7 +24,7 @@ router.use( async (req, res, next) => {
 // Routes that need auth to access
 router.post('/uploadimage', controllers.createCtrl.uploadImage); // Upload an image
 router.post('/draft', controllers.createCtrl.newDraft); // Create a new draft
-router.post('/drafts', controllers.createCtrl.getDrafts); // Get all drafts for user
+router.get('/drafts', controllers.createCtrl.getDrafts); // Get all drafts for user
 // router.post('/savecard', controllers.createCtrl.saveCard); // Save the card
 // router.post('/delcard', controllers.createCtrl.deleteCard); // Delete a draft card
 // router.post('/cards', controllers.createCtrl.getCards); // Get info on all the cards

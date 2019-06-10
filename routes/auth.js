@@ -9,7 +9,7 @@ router.post('/signup', controllers.authCtrl.signup);
 
 // JWT Authentication Middleware ================ //
 router.use( async (req, res, next) => {
-  // console.log('checking auth...');
+  console.log('checking token in auth...');
   const token = req.headers['authorization'];
   // console.log('Token received: ', token);
   if (typeof(token) !== 'undefined') {

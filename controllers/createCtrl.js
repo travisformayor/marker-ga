@@ -115,41 +115,45 @@ module.exports = {
     }
   },
   getDrafts: async (req, res) => {
-      try {
-        const foundDrafts = await db.Draft.find({user_id: req.userId})
-        return res.status(200).json({success: 'success', foundDrafts});
-      } catch (err) {
-        return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
-      }
-    },
-    newDraft: async (req, res) => {
-      // Create blank draft record  
-      try {
-        const newDraft = {};
-        const addedDraft = await db.Draft.create(newDraft);
-        console.log('New draft created: ', addedDraft)
-        return res.status(200) //.json({success: 'success', addedDraft});
-      } catch (err) {
-        return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
-      }
-    },
-
+    console.log('looking for drafts...')
+    console.log('user info: ', req.userId)
+    try {
+      const foundDrafts = await db.Draft.find({user_id: req.userId})
+      console.log('found drafts: ', foundDrafts)
+      return res.status(200).json({success: 'success', foundDrafts});
+    } catch (err) {
+      return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
+    }
   },
+  newDraft: async (req, res) => {
+    // Create blank draft record  
+    try {
+      // console.log('making a new draft...')
+      const newDraft = {
+        user_id: req.userId,
+      };
+      const addedDraft = await db.Draft.create(newDraft);
+      // console.log('New draft created: ', addedDraft)
+      return res.status(200).json({success: 'success'});
+    } catch (err) {
+      return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
+    }
+  },
+    //saveCard:
+    // Save a card (new card or updating an existing card)
+    // Save it as draft or as submit status
   
-  //saveCard:
-  // Save a card (new card or updating an existing card)
-  // Save it as draft or as submit status
-
-  //deleteCard:
-  // Delete a draft card
-  // card status has to be draft
-
-  //getCards:
-  // Get all cards the user is artist for
-  // draft cards as well as submitted cards
+    //deleteCard:
+    // Delete a draft card
+    // card status has to be draft
   
-  //getCard:
-  // Potentially not needed right now, all cards gets the same info at not much extra cost
-  // Get all the info a single card a user is working on
-  // card status has to be draft
-}
+    //getCards:
+    // Get all cards the user is artist for
+    // draft cards as well as submitted cards
+    
+    //getCard:
+    // Potentially not needed right now, all cards gets the same info at not much extra cost
+    // Get all the info a single card a user is working on
+    // card status has to be draft
+  };
+  
