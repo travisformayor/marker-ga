@@ -183,14 +183,40 @@ module.exports = {
       // console.log('deleting a draft...')
       // ToDo: check if user is the owner before letting them delete
       const updatedDraft = await db.Draft.findByIdAndUpdate(req.params.id, { ...req.body })
-      // const removedDraft = await db.Draft.findByIdAndDelete(req.params.id);
       console.log('Draft updated: ', updatedDraft)
       return res.status(200).json({success: 'success'});
     } catch (err) {
       return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
     }
   },
-    //saveCard:
+  submitCard: async (req, res) => {
+    // const { draftId } = req.body;
+    console.log('params: ', req.params);
+    console.log('body: ', req.body);
+    // .findByIdAndDelete()
+    try {
+      // 1) get the draft object by id
+      const foundDraft = await db.Draft.findById(req.params.id)
+      // 2) save that object to the card table, sans id
+      const newCard = {
+        user_id: foundDraft.user_id,
+        title: foundDraft.title,
+        desc: foundDraft.desc,
+        microName: foundDraft.microName,
+        microUrl: foundDraft.microUrl,
+        fileName: foundDraft.fileName,
+        fileUrl: foundDraft.fileUrl,
+      };
+      // console.log('found and spread: ', newCard)
+      // Add card to card collection
+      const addedCard = await db.Card.create(newCard);
+      console.log('Card added: ', addedCard)
+      return res.status(200).json({success: 'success'});
+    } catch (err) {
+      return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
+    }
+  },
+
     // Save a card (new card or updating an existing card)
     // Save it as draft or as submit status
   
