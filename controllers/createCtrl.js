@@ -139,6 +139,20 @@ module.exports = {
       return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
     }
   },
+  deleteDraft: async (req, res) => {
+    const { draftId } = req.body;
+    // .findByIdAndDelete()
+    try {
+      // console.log('deleting a draft...')
+      // ToDo: check if user is the owner before letting them delete
+      const removedDraft = await db.Draft.findByIdAndDelete(req.draftId);
+      console.log('Draft removed: ', removedDraft)
+      return res.status(200).json({success: 'success'});
+    } catch (err) {
+      return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
+    }
+
+  },
     //saveCard:
     // Save a card (new card or updating an existing card)
     // Save it as draft or as submit status

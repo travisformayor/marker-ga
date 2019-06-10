@@ -21,7 +21,7 @@ class AxiosModel {
       'authorization': token}});
     return request;
   }
-  // Create
+  // Manage Drafts
   // make a new blank draft
   static newDraft(token) {
     // console.log('Token in axios: ', token)
@@ -34,6 +34,12 @@ class AxiosModel {
   static getDrafts(token) {
     const api_url = `${endpoint}/create/drafts`;
     let request = axios.get(api_url, {headers: {
+      'authorization': token}});
+    return request;
+  }
+  static deleteDraft(data, token) {
+    const api_url = `${endpoint}/auth/draft`;
+    let request = axios.delete(api_url, data, {headers: {
       'authorization': token}});
     return request;
   }

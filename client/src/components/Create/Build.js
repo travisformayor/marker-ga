@@ -62,9 +62,9 @@ const useStyles = makeStyles(theme => ({
 
 const Build = (props) => {
   const classes = useStyles();
-  const { info: { createdDate, title } } = props;
+  const { info: { _id, createdDate, title }, deleteDraft } = props;
   const [ mini, setMini ] = useState(true);
-  // console.log('build: ', props)
+  console.log('build: ', props)
 
   const toggleMini = () => {
     console.log('toggle!');
@@ -75,7 +75,7 @@ const Build = (props) => {
     <>
       {mini ? (
         <div className={classes.draftMini} onClick={toggleMini} >
-          <IconButton className={classes.delete} aria-label="Delete">
+          <IconButton className={classes.delete} aria-label="Delete" onClick={() => deleteDraft(_id)}>
             <DeleteIcon />
           </IconButton>
           <span>{title ? title : 'Untitled'} - {moment(createdDate).format('MMMM Do YYYY, h:mm:ss a')}</span>

@@ -71,6 +71,25 @@ const Create = (props) => {
     }
   }
 
+  const deleteDraft = async (draftId) => {
+    console.log('delete draft id: ', draftId)
+    // console.log('token in localstore: ', localStorage.token)
+    if (localStorage.token) {
+      try {
+        // console.log('Creating new blank draft for user...');
+        //const response = 
+        await AxiosModel.deleteDraft(draftId, localStorage.token);
+        // re-run get new list of drafts
+        getDrafts();
+      } catch(err) {
+        console.log('err.response', err.response);
+        // ToDo: more robust error handling with alerts
+        // setAlerts(err.response.data.alerts);
+        // setAlerts(err.response.data.alerts);
+      }
+    }
+  }
+
   // If visitor is not logged in, show a message. Login/register required to create cards
   return (
     <>
@@ -88,7 +107,7 @@ const Create = (props) => {
               New Draft
             </Button>
             {drafts.reverse().map((draft, index) => (
-                <Build info={draft} key={'drafts'+index} />
+                <Build info={draft} deleteDraft={deleteDraft} key={'drafts'+index} />
             ))}
           </div>
         </>
