@@ -13,6 +13,7 @@ React S3 Art Gallery
 - JWT
 - FileUpload
 - AWS S3
+- async/await
 - React-Pose
 - md5
 - Material UI

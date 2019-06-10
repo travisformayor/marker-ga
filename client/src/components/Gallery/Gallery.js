@@ -31,7 +31,7 @@ const Gallery = () => {
   const getCards = async () => {
     try {
       const response = await AxiosModel.getCards();
-      console.log('card response: ', response.data.allCards);
+      // console.log('card response: ', response.data.allCards);
 
       setCards(response.data.allCards)
 
