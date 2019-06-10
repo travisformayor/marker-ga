@@ -83,7 +83,7 @@ const Signup = ({ close }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={classes.container} noValidate={false} autoComplete="off">
+      <form onSubmit={handleSubmit} className={classes.container} noValidate autoComplete="off">
         <TextField
           required
           helperText={getAlert('username')}
