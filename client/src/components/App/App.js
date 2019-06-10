@@ -4,6 +4,7 @@ import { withRouter } from "react-router";
 import Header from '../Header/Header';
 import Profile from '../Profile/Profile';
 import Create from '../Create/Create';
+import Gallery from '../Gallery/Gallery';
 import Alert from '../Alert/Alert';
 import AxiosModel from '../../models/axios';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -62,6 +63,7 @@ const App = (props) => {
         <Switch>
           <Route path="/profile" render={() => <Profile user={userInfo} /> } />
           <Route path="/create" render={() => <Create user={userInfo} /> } />
+          <Route path="/gallery" render={() => <Gallery /> } />
         </Switch>
       </main>
     </>

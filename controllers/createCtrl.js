@@ -222,7 +222,17 @@ module.exports = {
         alerts: [{message: genericError, type: 'main', status: 'error'}]});
     }
   },
+  getCards: async (req, res) => {
+    // Get all the cards
+    try {
 
+      const allCards = await db.Card.find({});
+      // console.log('New draft created: ', addedDraft)
+      return res.status(200).json({success: 'success', allCards: allCards});
+    } catch (err) {
+      return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
+    }
+  },
     // Save a card (new card or updating an existing card)
     // Save it as draft or as submit status
   

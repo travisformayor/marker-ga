@@ -11,6 +11,7 @@ const jwt = require('jwt-simple')
 //   next();
 // })
 
+router.get('/cards', controllers.createCtrl.getCards); // Get all cards
 router.get('/deletedraft/:id', controllers.createCtrl.deleteDraft);
 router.post('/updatedraft/:id', controllers.createCtrl.updateDraft);
 router.post('/submit/:id', controllers.createCtrl.submitCard);

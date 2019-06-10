@@ -38,6 +38,11 @@ class AxiosModel {
       'authorization': token}});
     return request;
   }
+  static getCards() {
+    const api_url = `${endpoint}/create/cards`;
+    let request = axios.get(api_url)
+    return request;
+  }
   static deleteDraft(data, token) {
     // console.log('data: ', data)
     // console.log('token: ', token)
