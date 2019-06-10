@@ -30,6 +30,7 @@ app.use(fileUpload({
   safeFileNames: true, // strip off any hinky characters from the filename
   preserveExtension: 4, // max length the .ext can be (.jpeg, .png, etc)
   abortOnLimit: true, // return a response of 413 of over file size limit
+  responseOnLimit: "File to large"
 }));
 
 // BodyParser

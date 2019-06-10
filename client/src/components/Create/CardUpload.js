@@ -37,6 +37,13 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
   },
+  centerBox: {
+    display: 'flex',
+    width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'start',
+    alignItems: 'center',
+  }
 }));
 
 const CardUpload = ({ refresh, info, toggleMini }) => {
@@ -170,9 +177,11 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
       } catch(err) {
         setUploading(false);
         console.error(err);
+        console.error(err.response.data);
         setUploadPercentage(0);
         setProcessing(false)
-        if (err.response.status === 413) {
+        // if (err.response.status === 413) {
+        if (err.response.data === "File to large") {
           setAlerts([{
             message: 'The file size is too damn high!', 
             status: 'error',
@@ -226,11 +235,13 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
         <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
       ))}
 
-      <Progress percentage={uploadPercentage} uploading={uploading} processing={processing} selectFile={selectFile} />
+      <div className={classes.centerBox}>
+        <Progress percentage={uploadPercentage} uploading={uploading} processing={processing} selectFile={selectFile} />
+        <p>{!uploading && !processing ? filename : null }</p>
+        <p>{uploading && !processing ? `Uploading ${filename}...` : null}</p>
+        <p>{uploading && processing ? `Processing ${filename}...` : null }</p>
+      </div>
       
-      <p>{!uploading && !processing ? filename : null }</p>
-      <p>{uploading && !processing ? `Uploading ${filename}...` : null}</p>
-      <p>{uploading && processing ? `Processing ${filename}...` : null }</p>
 
       {/* Show Image when done */}
       {/* {console.log(uploadedFiles)} */}
