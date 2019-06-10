@@ -140,8 +140,8 @@ const Signup = ({ close }) => {
           margin="normal"
           variant="outlined"
         />
-        {alerts.filter(alert => alert.type === 'extra').map((alert, index) => (
-          <Alert message={alert.message} status={'error'} key={'signup-alert'+index} />
+        {alerts.filter(alert => alert.type === 'auth').map((alert, index) => (
+          <Alert message={alert.message} status={alert.status} key={'signup-alert'+index} />
         ))}
         <NavButton 
           variant="contained" className={classes.button} type="submit" label="login">

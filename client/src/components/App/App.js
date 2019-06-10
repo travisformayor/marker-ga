@@ -55,8 +55,8 @@ const App = (props) => {
       <CssBaseline />
       <Header userInfo={userInfo} logOut={logOut} getProfile={getProfile} />
       <main>
-        {alerts.map((alert, index) => (
-          <Alert message={alert.message} status={'error'} key={'root-alert'+index} />
+        {alerts.filter(alert => alert.type === 'main').map((alert, index) => (
+          <Alert message={alert.message} status={alert.status} key={'root-alert'+index} />
         ))}
         <Switch>
           <Route path="/profile" render={() => <Profile user={userInfo.user} /> } />

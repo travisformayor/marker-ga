@@ -129,8 +129,8 @@ const Login = ({ close }) => {
             ),
           }}
         />
-        {alerts.filter(alert => alert.type === 'extra').map((alert, index) => (
-          <Alert message={alert.message} status={'error'} key={'login-alert'+index} />
+        {alerts.filter(alert => alert.type === 'auth').map((alert, index) => (
+          <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
         ))}
         <NavButton 
           variant="contained" className={classes.button} type="submit" label="login">

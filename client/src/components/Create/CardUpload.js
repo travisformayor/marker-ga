@@ -82,9 +82,6 @@ const CardUpload = () => {
       console.error(err);
       setUploadPercentage(0);
       setProcessing(false)
-      // if (err.response.status === 500) {
-      //   setAlerts({message: 'There was a problem with the server', status: 'error'});
-      // } else 
       if (err.response.status === 413) {
         setAlerts([{
           message: 'The file size is too damn high!', 

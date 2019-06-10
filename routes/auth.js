@@ -19,7 +19,9 @@ router.use( async (req, res, next) => {
     req.userId = openUp.id;
     next();
   } else {
-    res.sendStatus(403);
+    return res.status(403).json({
+      alerts: [{message: 'Login Required', type: 'main', status: 'error'}],
+    });
   }
 });
 

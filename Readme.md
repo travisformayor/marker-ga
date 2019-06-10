@@ -143,3 +143,4 @@ What does the (+) button do
 Progressive Loading
 
 First, you need a micro-thumbnail
+<https://www.npmjs.com/package/sharp>
