@@ -34,10 +34,10 @@ const todos = (state = defaultState, action) => {
       return updatedTodos;
     case 'EDIT_TODO':
       const editTodos = [...state];
-      console.log(editTodos);
+      // console.log(editTodos);
       const todoEdit = editTodos.find(todo => todo.id === action.id);
-      console.log(action);
-      console.log(todoEdit);
+      // console.log(action);
+      // console.log(todoEdit);
       // todoEdit.task = action.task;
       todoEdit.task = action.newText;
       return editTodos;

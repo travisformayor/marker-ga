@@ -31,7 +31,7 @@ const App = (props) => {
         });
         // console.log('user state here:', userInfo)
       } catch(err) {
-        console.log('err.response', err.response);
+        // console.log('err.response', err.response);
         // setAlerts(err.response.data.alerts);
         setAlerts(err.response.data.alerts);
       }

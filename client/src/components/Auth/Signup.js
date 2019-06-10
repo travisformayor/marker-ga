@@ -25,7 +25,7 @@ const Signup = ({ close }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      console.log('new user: ', newUser)
+      // console.log('new user: ', newUser)
       const response = await AxiosModel.signup(newUser);
       // console.log('Response: ',response);
       setAlerts([]); // clear old alerts

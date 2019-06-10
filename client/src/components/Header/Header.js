@@ -17,7 +17,8 @@ const Header = (props) => {
   const navLinks = [
     {name: 'main', path: '', color: '#3f51b5, 30%, #6573c3'}, // dark blue
     {name: 'create', path: 'create', color: '#2196f3, 30%, #4dabf5'}, // lite blue
-    {name: 'trade', path: 'trade', color: '#ff5722, 30%, #ff784e'}, // orange
+    // {name: 'trade', path: 'trade', color: '#ff5722, 30%, #ff784e'}, // orange
+    {name: 'gallery', path: 'gallery', color: '#ff5722, 30%, #ff784e'}, // orange
     {name: 'artists', path: 'artists', color: '#4caf50, 30%, #6fbf73'}, // green
     {name: 'profile', path: 'profile', color: '#673ab7, 30%, #8561c5'}, // purple
   ]

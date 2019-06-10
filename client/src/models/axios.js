@@ -11,7 +11,7 @@ class AxiosModel {
     return request;
   }
   static login(data) {
-    console.log('data: ', data)
+    // console.log('data: ', data)
     const api_url = `${endpoint}/auth/login`;
     let request = axios.post(api_url, data);
     return request;
@@ -39,8 +39,8 @@ class AxiosModel {
     return request;
   }
   static deleteDraft(data, token) {
-    console.log('data: ', data)
-    console.log('token: ', token)
+    // console.log('data: ', data)
+    // console.log('token: ', token)
     const api_url = `${endpoint}/create/deletedraft/${data.dataid}`;
     // let request = axios.get(api_url, data, {headers: {
     //   'authorization': token}});
@@ -48,9 +48,9 @@ class AxiosModel {
     return request;
   }
   static updateDraft(data, id, token) {
-    console.log('data: ', data)
-    console.log('id: ', id)
-    console.log('token: ', token)
+    // console.log('data: ', data)
+    // console.log('id: ', id)
+    // console.log('token: ', token)
     const api_url = `${endpoint}/create/updatedraft/${id}`;
     // let request = axios.get(api_url, data, {headers: {
     //   'authorization': token}});
@@ -76,6 +76,13 @@ class AxiosModel {
         );            
       }
     });
+    return request;
+  }
+  // Submitting Cards
+  static submitCard(id, token) {
+    // console.log('id: ', id)
+    const api_url = `${endpoint}/create/submit/${id}`;
+    let request = axios.post(api_url);
     return request;
   }
 }

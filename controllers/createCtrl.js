@@ -192,7 +192,7 @@ module.exports = {
   submitCard: async (req, res) => {
     // const { draftId } = req.body;
     console.log('params: ', req.params);
-    console.log('body: ', req.body);
+    // console.log('body: ', req.body);
     // .findByIdAndDelete()
     try {
       // 1) get the draft object by id
@@ -210,10 +210,16 @@ module.exports = {
       // console.log('found and spread: ', newCard)
       // Add card to card collection
       const addedCard = await db.Card.create(newCard);
-      console.log('Card added: ', addedCard)
+      console.log('Card added') //, addedCard
+      // 3) delete the draft
+      const deletedDraft = await db.Draft.findByIdAndDelete(req.params.id)
+      // const deletedDraft = await db.Draft.deleteOne({_id: req.params.id})
+      console.log('Draft deleted') //: ', deletedDraft
+      
       return res.status(200).json({success: 'success'});
     } catch (err) {
-      return res.status(500).json({status: 500, alerts: [{message: genericError, type: 'main', status: 'error'}]});
+      return res.status(500).json({status: 500, errData: err, errDa: err.response, 
+        alerts: [{message: genericError, type: 'main', status: 'error'}]});
     }
   },
 

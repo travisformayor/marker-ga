@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CardUpload = ({ refresh, info }) => {
+const CardUpload = ({ refresh, info, toggleMini }) => {
   const classes = useStyles();
   const [ file, setFile ] = useState(null);
   const [ filename, setFilename ] = useState('Choose File');
@@ -68,7 +68,7 @@ const CardUpload = ({ refresh, info }) => {
     e.preventDefault();
     try {
       const response = await AxiosModel.updateDraft(cardDraft, info._id, localStorage.token);
-      console.log('Response: ', response);
+      // console.log('Response: ', response);
       refresh();
       // setAlerts([]); // clear old alerts
       // localStorage.token = response.data.token;
@@ -76,7 +76,20 @@ const CardUpload = ({ refresh, info }) => {
       // close();
       // history.push(`/profile`)
     } catch(err) {
-      console.log(err);
+      // console.log(err);
+      // setAlerts(err.response.data.alerts)
+    }
+  }
+
+  const handleCreate = async e => {
+    e.preventDefault();
+    try {
+      const response = await AxiosModel.submitCard(info._id, localStorage.token);
+      // console.log('Response: ', response);
+      refresh();
+      toggleMini();
+    } catch(err) {
+      // console.log(err);
       // setAlerts(err.response.data.alerts)
     }
   }
@@ -174,9 +187,6 @@ const CardUpload = ({ refresh, info }) => {
   }
   return (
     <>
-      {alerts.filter(alert => alert.type === 'upload').map((alert, index) => (
-        <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
-      ))}
 
       <form onSubmit={handleSubmit} className={classes.container} noValidate autoComplete="off">
         <TextField
@@ -206,6 +216,15 @@ const CardUpload = ({ refresh, info }) => {
           Save Draft
         </NavButton>
       </form>
+      <form onSubmit={handleCreate} className={classes.container} noValidate autoComplete="off">
+        <NavButton 
+            variant="contained" className={classes.button} type="submit" label="login">
+            Submit
+        </NavButton>
+      </form>
+      {alerts.filter(alert => alert.type === 'upload').map((alert, index) => (
+        <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
+      ))}
 
       <Progress percentage={uploadPercentage} uploading={uploading} processing={processing} selectFile={selectFile} />
       

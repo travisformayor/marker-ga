@@ -1,5 +1,6 @@
 import React from 'react';
 import Alert from '../Alert/Alert';
+const moment = require('moment');
 
 const Profile = (props) => {
   const { user: {name, username, email, signupDate }, loggedIn } = props.user // avatar, twitter
@@ -14,7 +15,7 @@ const Profile = (props) => {
         <p>{name}</p>
         <p>{username}</p>
         <p>{email}</p>
-        <p>{signupDate}</p>
+        <p>{moment(signupDate).format('MMMM Do YYYY, h:mm:ss a')}</p>
       </div>
       )}
   </>

@@ -69,7 +69,7 @@ const Build = (props) => {
   // console.log('build: ', props)
 
   const toggleMini = () => {
-    console.log('toggle!');
+    // console.log('toggle!');
     setMini(!mini);
   }
 
@@ -101,7 +101,7 @@ const Build = (props) => {
             <span>{title ? title : 'Untitled'} - {moment(createdDate).format('MMMM Do YYYY, h:mm:ss a')}</span>
           </div>
           <div className={classes.draftBody}>
-            <CardUpload refresh={refresh} info={info} />
+            <CardUpload refresh={refresh} info={info} toggleMini={toggleMini} />
           </div>
         </div>
       )}

@@ -45,7 +45,7 @@ const Create = (props) => {
         setDrafts(foundDrafts);
         // setDrafts(foundDrafts);
       } catch(err) {
-        console.log('err.response', err.response);
+        // console.log('err.response', err.response);
         // setAlerts(err.response.data.alerts);
         // setAlerts(err.response.data.alerts);
       }
@@ -63,7 +63,7 @@ const Create = (props) => {
         // re-run get all drafts
         getDrafts();
       } catch(err) {
-        console.log('err.response', err.response);
+        // console.log('err.response', err.response);
         // ToDo: more robust error handling with alerts
         // setAlerts(err.response.data.alerts);
         // setAlerts(err.response.data.alerts);
@@ -78,12 +78,12 @@ const Create = (props) => {
       try {
         // console.log('Creating new blank draft for user...');
         //const response = 
-        console.log('data to send:', draftId)
+        // console.log('data to send:', draftId)
         await AxiosModel.deleteDraft(draftId, localStorage.token);
         // re-run get new list of drafts
         getDrafts();
       } catch(err) {
-        console.log('err.response', err.response);
+        // console.log('err.response', err.response);
         // ToDo: more robust error handling with alerts
         // setAlerts(err.response.data.alerts);
         // setAlerts(err.response.data.alerts);
