@@ -63,7 +63,8 @@ const useStyles = makeStyles(theme => ({
 
 const Build = (props) => {
   const classes = useStyles();
-  const { info: { _id, createdDate, title }, deleteDraft } = props;
+  const { info, deleteDraft, refresh } = props;
+  const { _id, createdDate, title } = info;
   const [ mini, setMini ] = useState(true);
   // console.log('build: ', props)
 
@@ -100,7 +101,7 @@ const Build = (props) => {
             <span>{title ? title : 'Untitled'} - {moment(createdDate).format('MMMM Do YYYY, h:mm:ss a')}</span>
           </div>
           <div className={classes.draftBody}>
-            <CardUpload draftid={_id}/>
+            <CardUpload draftid={_id} refresh={refresh} info={info} />
           </div>
         </div>
       )}

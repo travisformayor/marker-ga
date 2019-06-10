@@ -108,7 +108,7 @@ const Create = (props) => {
               New Draft
             </Button>
             {drafts.reverse().map((draft, index) => (
-                <Build info={draft} deleteDraft={deleteDraft} key={'drafts'+index} />
+                <Build info={draft} deleteDraft={deleteDraft} refresh={getDrafts} key={'drafts'+index} />
             ))}
           </div>
         </>

@@ -39,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CardUpload = ({ draftid }) => {
+const CardUpload = ({ draftid, refresh, info }) => {
   const classes = useStyles();
   const [ file, setFile ] = useState(null);
   const [ filename, setFilename ] = useState('Choose File');
@@ -49,8 +49,8 @@ const CardUpload = ({ draftid }) => {
   const [ processing, setProcessing ] = useState(false);
   const [ uploading, setUploading ] = useState(false);
   const [ cardDraft, setCardDraft ] = useState({
-    title: '',
-    desc: '',
+    title: info.title,
+    desc: info.desc,
     // email: '',
     // password: '',
     // password2: '',
@@ -68,6 +68,7 @@ const CardUpload = ({ draftid }) => {
     try {
       const response = await AxiosModel.updateDraft(cardDraft, draftid, localStorage.token);
       console.log('Response: ', response);
+      refresh();
       // setAlerts([]); // clear old alerts
       // localStorage.token = response.data.token;
       // success outcome: close the modal
