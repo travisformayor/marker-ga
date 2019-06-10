@@ -8,7 +8,19 @@ import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles(theme => ({
   button: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
+    margin: '5px auto',
+    width: '150px',
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '80%',
+    margin: '5px auto',
+    // border: '1px solid blue',
+    // flexWrap: 'wrap',
   },
 }));
 
@@ -45,8 +57,9 @@ const Create = (props) => {
     if (localStorage.token) {
       try {
         // console.log('Creating new blank draft for user...');
-        const response = await AxiosModel.newDraft(localStorage.token);
-        console.log('new draft response: ', response);
+        //const response = 
+        await AxiosModel.newDraft(localStorage.token);
+        // console.log('new draft response: ', response);
         // re-run get all drafts
         getDrafts();
       } catch(err) {
@@ -65,17 +78,19 @@ const Create = (props) => {
         <Alert message={'You need to be logged in to create'} status={'error'} />
       ) : (
         <>
-          <Button 
-            variant="contained" color="primary" 
-            aria-label="New Draft" className={classes.button}
-            onClick={newDraft}
-            >
-            <Icon>edit_icon</Icon>
-            New Draft
-          </Button>
-          {drafts.reverse().map((draft, index) => (
-            <Build info={draft} key={'drafts'+index} />
-          ))}
+          <div className={classes.container}>
+            <Button 
+              variant="contained" color="primary" 
+              aria-label="New Draft" className={classes.button}
+              onClick={newDraft}
+              >
+              <Icon>edit_icon</Icon>
+              New Draft
+            </Button>
+            {drafts.reverse().map((draft, index) => (
+                <Build info={draft} key={'drafts'+index} />
+            ))}
+          </div>
         </>
       )}
     </>

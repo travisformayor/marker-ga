@@ -37,7 +37,7 @@ const AuthDialog = (props) => {
         variant="outlined" color="inherit" 
         onClick={handleOpen}
       >
-        Login / Signup
+        Login
       </Button>
       <Dialog
         fullScreen={fullScreen}

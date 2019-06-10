@@ -42,7 +42,7 @@ const Nav = (props) => {
       border: 0,
       color: 'white',
       height: 40,
-      padding: '0px 25px',
+      padding: '0px 20px',
       margin: '0px 5px',
       boxShadow: '0 3px 3px 3px rgba(100, 100, 100, .3)',
     },
