@@ -6,8 +6,25 @@ import AxiosModel from '../../models/axios';
 import Alert from '../Alert/Alert';
 import Progress from './Progress';
 
-// Nav button css
-const NavButton = withStyles({
+// Special Buttons
+const SaveButton = withStyles({
+  root: {
+    background: 'linear-gradient(45deg, #35baf6 30%, #009688 90%)',
+    borderRadius: 5,
+    border: 0,
+    color: 'white',
+    height: 50,
+    padding: '0px 40px',
+    // marginTop: '30px',
+    boxShadow: '0 3px 3px 2px rgba(0, 0, 0, .2)',
+  },
+  label: {
+    textTransform: 'capitalize',
+    fontSize: '1.5em',
+  },
+})(Button);
+
+const SubmitButton = withStyles({
   root: {
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     borderRadius: 5,
@@ -16,7 +33,7 @@ const NavButton = withStyles({
     height: 50,
     padding: '0px 40px',
     // marginTop: '30px',
-    boxShadow: '0 3px 5px 5px rgba(255, 105, 135, .3)',
+    boxShadow: '0 3px 3px 2px rgba(0, 0, 0, .2)',
   },
   label: {
     textTransform: 'capitalize',
@@ -34,15 +51,36 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
+  buttonHolder: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   button: {
     margin: theme.spacing(1),
+    // flexGrow: 1,
+    width: '40%'
   },
   centerBox: {
-    display: 'flex',
     width: '100%',
+    display: 'flex',
     flexDirection: 'column',
     justifyContent: 'start',
     alignItems: 'center',
+  },
+  imgHolder: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'start',
+    alignItems: 'center',
+  },
+  imageItem: {
+    width: 'auto', 
+    height: 'auto',
+    maxWidth: '600px',
+    minWidth: '200px',
   }
 }));
 
@@ -51,10 +89,14 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
   const [ file, setFile ] = useState(null);
   const [ filename, setFilename ] = useState('Choose File');
   const [ uploadedFiles, setUploadedFiles ] = useState([]);
-  const [ alerts, setAlerts ] = useState([]);
   const [ uploadPercentage, setUploadPercentage ] = useState(0);
   const [ processing, setProcessing ] = useState(false);
   const [ uploading, setUploading ] = useState(false);
+  const [ alerts, setAlerts ] = useState([{
+    message: '', 
+    status: '',
+    type: '',
+  }]);
   const [ cardDraft, setCardDraft ] = useState({
     title: info.title,
     desc: info.desc,
@@ -196,8 +238,19 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
   }
   return (
     <>
+      {cardDraft.fileName ? (
+        <div className={classes.imgHolder}>
+          <h5>{cardDraft.fileName}</h5>
+          <img className={classes.imageItem} src={cardDraft.fileUrl} alt={'Uploaded: ' + cardDraft.fileName} />
+        </div>
+      ) : ( null )}
 
-      <form onSubmit={handleSubmit} className={classes.container} noValidate autoComplete="off">
+      {alerts.filter(alert => alert.type === 'upload').map((alert, index) => (
+        <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
+      ))}
+      
+      <form className={classes.container} noValidate autoComplete="off"> 
+        {/* onSubmit={handleSubmit}  */}
         <TextField
           id="outlined-draft-title"
           className={classes.textField}
@@ -220,43 +273,30 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
           margin="normal"
           variant="outlined"
         />
-        <NavButton 
-          variant="contained" className={classes.button} type="submit" label="login">
-          Save Draft
-        </NavButton>
       </form>
-      <form onSubmit={handleCreate} className={classes.container} noValidate autoComplete="off">
-        <NavButton 
-            variant="contained" className={classes.button} type="submit" label="login">
-            Submit
-        </NavButton>
-      </form>
-      {alerts.filter(alert => alert.type === 'upload').map((alert, index) => (
-        <Alert message={alert.message} status={alert.status} key={'login-alert'+index} />
-      ))}
 
       <div className={classes.centerBox}>
+        <p style={{fontSize: '.75em'}}>jpg/png only. 3mb limit</p>
         <Progress percentage={uploadPercentage} uploading={uploading} processing={processing} selectFile={selectFile} />
-        <p>{!uploading && !processing ? filename : null }</p>
-        <p>{uploading && !processing ? `Uploading ${filename}...` : null}</p>
-        <p>{uploading && processing ? `Processing ${filename}...` : null }</p>
+        {!uploading && !processing ? (<h5> {filename} </h5> ): null }
+        {uploading && !processing ? (<h5>`Uploading ${filename}...`</h5>) : null}
+        {uploading && processing ? (<h5>Processing ${filename}...` </h5>) : null }
       </div>
-      
 
-      {/* Show Image when done */}
-      {/* {console.log(uploadedFiles)} */}
-      {/* {uploadedFiles.filter(file => file.type === 'upload').map((file, index) => (
-        <div key={'image'+index}>
-          <h3>{file.fileName}</h3>
-          <img style={{width: '100%'}} src={file.filePath} alt={'Uploaded: ' + file.fileName} />
-        </div>
-       ))} */}
-      {cardDraft.fileName ? (
-        <div>
-          <h3>{cardDraft.fileName}</h3>
-          <img style={{width: '100%'}} src={cardDraft.fileUrl} alt={'Uploaded: ' + cardDraft.fileName} />
-        </div>
-       ) : ( null )}
+      <div className={classes.buttonHolder}>
+        <SaveButton 
+          variant="contained" className={classes.button} 
+          type="submit" label="login" onClick={handleSubmit} >
+          Save Draft
+        </SaveButton>
+        {info.title && info.fileUrl ? (
+          <SubmitButton 
+            variant="contained" className={classes.button} 
+            type="submit" label="login" onClick={handleCreate} >
+            Submit to Gallery
+          </SubmitButton>
+        ) : null }
+      </div>
     </>
   )
 }
