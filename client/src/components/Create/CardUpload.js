@@ -106,11 +106,18 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
     fileUrl: info.fileUrl,
   });
 
-  const handleChange = event => {
+  const handleChange = async event => {
     setCardDraft({
       ...cardDraft, // spread operator. copy the previous newUser first
       [event.target.name]: event.target.value, // Add any new changes
-    })
+    });
+    // Test work at removing the submit draft button:
+    // try {
+    //   await AxiosModel.updateDraft(cardDraft, info._id, localStorage.token);
+    //   refresh();
+    // } catch(err) {
+    //   console.log(err);
+    // }
   };
 
   const handleSubmit = async e => {
@@ -250,7 +257,6 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
       ))}
       
       <form className={classes.container} noValidate autoComplete="off"> 
-        {/* onSubmit={handleSubmit}  */}
         <TextField
           id="outlined-draft-title"
           className={classes.textField}
