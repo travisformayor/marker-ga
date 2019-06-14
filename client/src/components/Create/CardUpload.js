@@ -285,8 +285,8 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
         <p style={{fontSize: '.75em'}}>jpg/png only. 3mb limit</p>
         <Progress percentage={uploadPercentage} uploading={uploading} processing={processing} selectFile={selectFile} />
         {!uploading && !processing ? (<h5> {filename} </h5> ): null }
-        {uploading && !processing ? (<h5>`Uploading ${filename}...`</h5>) : null}
-        {uploading && processing ? (<h5>Processing ${filename}...` </h5>) : null }
+        {uploading && !processing ? (<h5>Uploading {filename}...</h5>) : null}
+        {uploading && processing ? (<h5>Processing {filename}...</h5>) : null }
       </div>
 
       <div className={classes.buttonHolder}>
