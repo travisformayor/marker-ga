@@ -2,11 +2,17 @@
 
 React S3 Art Gallery
 
+## Overview
+
+Marker is a React app built to explore file upload, backend image processing, AWS S3 apis, and React component animations. Users can create an account, create draft submissions they can update over time or delete, upload images, and submit a final version to the gallery. The upload button has progress tracking, backend validation on file size and file type, creates a thumbnail, uses hashing for file name and data upload verification, and uploads the image and thumbnail to AWS S3.
+
+![Screenshot](/readme/minimain.png)
+
 ## Resources
   
 - <https://www.youtube.com/watch?v=b6Oe2puTdMQ>
-- <https://github.com/FortAwesome/react-fontawesome>
 - <https://github.com/FortAwesome/react-fontawesome#installation>
+- <https://www.npmjs.com/package/sharp>
 
 ## Tech
 
@@ -19,22 +25,7 @@ React S3 Art Gallery
 - Material UI
 - concurrently
 
-```json
-"scripts": {
-  "start": "node server.js",
-  "server": "nodemon server.js",
-  "client": "cd client && yarn start",
-  "dev": "concurrently \"yarn run server\" \"yarn run client\"",
-}
-```
-
-## Responsive
-
-- Login / Signup modal goes full screen on mobile view
-- Nav bar hides active page
-- Profile Dropdown with Username
-
-## Backend Validation
+## Validation
 
 - Unique username and email
 - File Size
@@ -54,6 +45,8 @@ React S3 Art Gallery
 
 ## Animations
 
+![Nav Gif](/readme/nav-trim.gif)
+
 - Staggered roll in on nav
 - Color changing section header
 - Title changing section header
@@ -61,8 +54,9 @@ React S3 Art Gallery
   - <https://material-ui.com/components/progress/#interactive-integration>
   - `zIndex: 1,` vs `zIndex: -1,`
 
+## Upload Button
 
-## The Button
+![Upload Gif](/readme/upshort.gif)
 
 - Select a file. Images only by default
 - File Upload
@@ -82,7 +76,13 @@ React S3 Art Gallery
 - Display the image (the S3 url) saved to the record
 - Progress indicator disappears after 10 seconds
 
-## Draft Managment
+## Responsive
+
+- Login / Signup modal goes full screen on mobile view
+- Nav bar hides active page
+- Profile Dropdown with Username
+
+## Draft Management
 
 - Create new draft
 - Update draft
@@ -93,30 +93,22 @@ React S3 Art Gallery
 
 ### Progressive Image Loading (with Skeletons)
 
-### :skull: Skeletons
+#### :skull: Skeletons
 
-The (typically) grey place holder before some content has loaded enough to start displaying. CSS animations like pulse or side wide are common, to give a sense something is happening in the background.
+The (typically) grey place holder before some content has loaded enough to start displaying.
 
-Triggering the Skelly on/off can e as simple as some grey divs that display when a state is true, and hide when false. Successful response from the api call can trigger that state to toggle to false, which reveals the else clause: divs for the real content.
+#### Progressive Images
 
 <https://medium.com/@perjansson/a-progressive-image-loader-in-react-f14ae652619d>
 
-- const image = new Image() => creates an empty html img tag
-- set the src attribute for that tag => image.src = src
+Progressive can be one of two things:
 
-Progressive is a real method of encoding an image like a JPEG, where the data loads in over the whole area instead of top to bottom. What you get is an image that starts off pixelate and gets more detail as it loads, vs empty space that slowly fills in from the top. However the file needs to be specially prepared for this to work. But we can fake it!
+- A real method of encoding an image where the data loads in over the whole area instead of top to bottom. What you get is an image that starts off pixelate and gets more detail as it loads, vs empty space that slowly fills in from the top
+- A fake version of the above, using thumbnails and blur
 
-- First generate a super small super low res thumbnail of the image (like 20px by 20px)
+##### Steps
+
+- Generate a super small super low res thumbnail of the image (like 20px by 20px)
 - Load that small image, stretched to fit the space, and toss a CSS blur on it
 - Load the full res image in the background
 - When its loaded, switch it out with the low res one, and transition the CSS blur away
-- Axios request
-  - get all the text and the urls of the micro-thumb and big image
-  - display the text and the micro-thumb, blurred, replacing the css pulsing skelly on axios response
-  - the client is now downloading the large file too, tracked with image.onload in the medium post
-  - once the large file is done, transition the blurred low res one with the nice high res one and replace it
-progressive loading - small thumbnail with blur while waiting on the large file ti finish
-npm sharp - makes low res thumbnails
-  - make a nice thumbnail for displaying
-  - make a micro thumbnail for progressive loading
-- <https://www.npmjs.com/package/sharp>
