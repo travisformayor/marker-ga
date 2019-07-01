@@ -25,24 +25,6 @@ Marker is a React app built to explore file upload, backend image processing, AW
 - Material UI
 - concurrently
 
-## Validation
-
-- Unique username and email
-- File Size
-- File Type
-- No Profile when logged out
-- Routes are protected, incase you go directly to it
-- API's protected by JWT (ToDo: finish some of the draft routes)
-- .env file for AWS S3 and JWT secrets
-- alert messages have themes
-
-```zsh
-[0] mime type is:  image/jpeg
-[0] md5 hash of file:  4cc0fd8432495fe306f07654f42571a8
-[0] The returned ETag:  4cc0fd8432495fe306f07654f42571a8
-[0] Do they equal?  true
-```
-
 ## Animations
 
 ![Nav Gif](/readme/nav-trim.gif)
@@ -75,6 +57,24 @@ Marker is a React app built to explore file upload, backend image processing, AW
 - Display any error or info/success messages
 - Display the image (the S3 url) saved to the record
 - Progress indicator disappears after 10 seconds
+
+## Validation
+
+- Unique username and email
+- File Size
+- File Type
+- No Profile when logged out
+- Routes are protected, incase you go directly to it
+- API's protected by JWT (ToDo: finish some of the draft routes)
+- .env file for AWS S3 and JWT secrets
+- alert messages have themes
+
+```zsh
+[0] mime type is:  image/jpeg
+[0] md5 hash of file:  4cc0fd8432495fe306f07654f42571a8
+[0] The returned ETag:  4cc0fd8432495fe306f07654f42571a8
+[0] Do they equal?  true
+```
 
 ## Responsive
 
