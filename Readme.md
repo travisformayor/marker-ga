@@ -23,7 +23,8 @@ Marker is a React app built to explore file upload, backend image processing, AW
 - React-Pose
 - md5
 - Material UI
-- concurrently
+- Concurrently
+- Sharp, for creating thumbnails
 
 ## Animations
 
@@ -89,26 +90,22 @@ Marker is a React app built to explore file upload, backend image processing, AW
 - Delete draft
 - Submit draft
 
-## Next Steps
-
-### Progressive Image Loading (with Skeletons)
-
-#### :skull: Skeletons
-
-The (typically) grey place holder before some content has loaded enough to start displaying.
-
-#### Progressive Images
-
-<https://medium.com/@perjansson/a-progressive-image-loader-in-react-f14ae652619d>
+## Progressive Image Loading
 
 Progressive can be one of two things:
 
 - A real method of encoding an image where the data loads in over the whole area instead of top to bottom. What you get is an image that starts off pixelate and gets more detail as it loads, vs empty space that slowly fills in from the top
 - A fake version of the above, using thumbnails and blur
 
-##### Steps
+### Steps
 
 - Generate a super small super low res thumbnail of the image (like 20px by 20px)
-- Load that small image, stretched to fit the space, and toss a CSS blur on it
+- Load that small image and toss a CSS blur on it
 - Load the full res image in the background
 - When its loaded, switch it out with the low res one, and transition the CSS blur away
+
+## Next Steps
+
+### :skull: Skeleton Loader
+
+The (typically) grey place holder before some content has loaded enough to start displaying.
