@@ -110,7 +110,11 @@ module.exports = {
         // send main image
         const uploadedFile = await sssSend(fileName, file.data, file.md5);
         // create and send micro thumbnail
-        const microThumbnail = await sharp(file.data).resize(30, 40).toBuffer();
+        const microThumbnail = await sharp(file.data).resize(30, 40, {
+          fit: sharp.fit.inside,
+          withoutEnlargement: true
+        }).toBuffer();
+
         const uploadedMicro = await sssSend(microName,  microThumbnail, md5(microThumbnail)); 
 
         const updatedMicro = { alerts: [{
