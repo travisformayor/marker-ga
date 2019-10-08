@@ -1,9 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const GalleryItem = ({ card }) => {
+  const [currentImage, setImage ] = useState(card.microUrl);
+  const [loading, setLoading ] = useState(true);
+
+  const loadImage = src => {
+    const image = new Image()
+    image.onload = () => {
+      setImage(src)
+      setLoading(false)
+    }
+    image.src = src
+  }
+
+  useEffect(() => {
+    loadImage(card.fileUrl);
+  },[card.fileUrl])
+
+  const style = loadingStatus => {
+    return {
+      width: '100%',
+      transition: '0.5s filter linear',
+      filter: `${loadingStatus ? 'blur(10px)' : ''}`,
+    }
+  }
+
   return(
-    // <p>{card._id}</p>
-    <img style={{width: '100%'}} src={card.fileUrl} alt={'Uploaded: ' + card.fileName} />
+    <img style={style(loading)} src={currentImage} alt={'Uploaded: ' + card.fileName} />
   )
 }
 
