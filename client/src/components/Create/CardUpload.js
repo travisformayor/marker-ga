@@ -123,8 +123,9 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const response = await AxiosModel.updateDraft(cardDraft, info._id, localStorage.token);
+      // const response = await AxiosModel.updateDraft(cardDraft, info._id, localStorage.token);
       // console.log('Response: ', response);
+      await AxiosModel.updateDraft(cardDraft, info._id, localStorage.token);
       refresh();
       // setAlerts([]); // clear old alerts
       // localStorage.token = response.data.token;
@@ -140,8 +141,9 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
   const handleCreate = async e => {
     e.preventDefault();
     try {
-      const response = await AxiosModel.submitCard(info._id, localStorage.token);
+      // const response = await AxiosModel.submitCard(info._id, localStorage.token);
       // console.log('Response: ', response);
+      await AxiosModel.submitCard(info._id, localStorage.token);
       refresh();
       toggleMini();
     } catch(err) {
