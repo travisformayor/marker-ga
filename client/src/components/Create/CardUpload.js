@@ -105,6 +105,8 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
     fileName: info.fileName,
     fileUrl: info.fileUrl,
   });
+  const [currentImage, setImage ] = useState();
+  const [loading, setLoading ] = useState(true);
 
   const handleChange = async event => {
     setCardDraft({
@@ -245,12 +247,39 @@ const CardUpload = ({ refresh, info, toggleMini }) => {
       }
     }
   }
+
+  const loadImage = src => {
+    const image = new Image()
+    image.onload = () => {
+      setImage(src)
+      setLoading(false)
+    }
+    image.src = src
+  }
+
+  useEffect(() => {
+    setImage(cardDraft.microUrl);
+  },[cardDraft.microUrl])
+
+  useEffect(() => {
+    loadImage(cardDraft.fileUrl);
+  },[cardDraft.fileUrl])
+
+  const style = loadingStatus => {
+    return {
+      width: '100%',
+      height: '100%',
+      transition: '0.5s filter linear',
+      filter: `${loadingStatus ? 'blur(10px)' : ''}`,
+    }
+  }
+
   return (
     <>
       {cardDraft.fileName ? (
         <div className={classes.imgHolder}>
           <h5>{cardDraft.fileName}</h5>
-          <img className={classes.imageItem} src={cardDraft.fileUrl} alt={'Uploaded: ' + cardDraft.fileName} />
+          <img className={classes.imageItem} style={style(loading)} src={currentImage} alt={'Uploaded: ' + cardDraft.fileName} />
         </div>
       ) : ( null )}
 
