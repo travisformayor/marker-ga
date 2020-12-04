@@ -33,9 +33,7 @@ Marker is a React app built to explore file upload, backend image processing, AW
 - Staggered roll in on nav
 - Color changing section header
 - Title changing section header
-- Progress around button. Documentation issue?
-  - <https://material-ui.com/components/progress/#interactive-integration>
-  - `zIndex: 1,` vs `zIndex: -1,`
+- Progress bar surrounding button
 
 ## Upload Button
 
