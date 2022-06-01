@@ -16,7 +16,7 @@
     "md5": "^2.2.1",
     "mongoose": "^5.5.12",
     "nodemon": "^1.19.3",
-    "sharp": "^0.22.1"
+    "sharp": "^0.30.5"
   },
   "scripts": {
     "heroku-postbuild": "cd client && yarn --production=false && yarn run build",
